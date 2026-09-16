@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -20,10 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             EjerciciosKotlinTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Presentacion(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -31,17 +29,21 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Presentacion(modifier: Modifier = Modifier) {
+    // Column es el layout: sin él, los tres Text se superponen unos sobre otros
+    // en vez de apilarse verticalmente (esto es justo lo que pide probar el punto 3
+    // de la experimentación).
+    Column(modifier = modifier) {
+        Text(text = "Felipe")
+        Text(text = "Ingeniería en Sistemas")
+        Text(text = "Quiero aprender Kotlin")
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun PresentacionPreview() {
     EjerciciosKotlinTheme {
-        Greeting("Android")
+        Presentacion()
     }
 }
