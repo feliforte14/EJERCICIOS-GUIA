@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ejercicioskotlin.ui.theme.EjerciciosKotlinTheme
+import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material3.Button
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,11 +27,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             EjerciciosKotlinTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier.padding(innerPadding)) {
-                        DatoEstudiante("Nombre", "Ana")
-                        DatoEstudiante("Carrera", "Sistemas")
-                        DatoEstudiante("Anio", "1")
-                        Text(descripcionEdad(20))
+                    Column(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .padding(all = 26.dp)
+                    ) {
+                        Text("FICHA DEL ESTUDIANTE")
+                        DatoEstudiante("Nombre:", "Ana")
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ){
+                            DatoEstudiante("Carrera:","Sistemas")
+                            DatoEstudiante("Anio:","1")
+                        }
+                        Button({}) {
+                            Text("Guardar")
+                        }
                     }
                 }
             }
@@ -39,24 +56,45 @@ fun DatoEstudiante(etiqueta: String, valor: String) {
     Text("$etiqueta $valor")
 }
 
-// Función Kotlin normal (sin @Composable): recibe un Int y devuelve un String.
-// No dibuja nada por sí sola, solo calcula texto — por eso después se muestra
-// con Text(descripcionEdad(...)) desde un composable.
-fun descripcionEdad(edad: Int): String {
-    // Desafío del profe Adrián: if como expresión, devuelve directo el String
-    // según la condición, sin necesidad de variables intermedias ni múltiples return.
-    return if (edad >= 18) {
-        "Edad: $edad anios (mayor de edad)"
-    } else {
-        "Edad: $edad anios (menor de edad)"
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable
 fun DatoEstudiantePreview() {
     EjerciciosKotlinTheme {
         DatoEstudiante("Nombre", "Ana")
+    }
+}
+
+// Experimento: background() ANTES de padding().
+// El fondo pinta TODO el Column, y el padding empuja el contenido hacia
+// adentro dejando ver el color alrededor del texto.
+@Preview(showBackground = true)
+@Composable
+fun OrdenModifierBackgroundPrimeroPreview() {
+    EjerciciosKotlinTheme {
+        Column(
+            modifier = Modifier
+                .background(Color.Blue)
+                .padding(16.dp)
+        ) {
+            Text("Fondo primero, padding despues")
+        }
+    }
+}
+
+// Experimento: padding() ANTES de background().
+// El padding reserva espacio vacío (sin color todavía), y el background
+// solo pinta lo que queda después de ese espacio — queda un borde sin color.
+@Preview(showBackground = true)
+@Composable
+fun OrdenModifierPaddingPrimeroPreview() {
+    EjerciciosKotlinTheme {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .background(Color.Blue)
+        ) {
+            Text("Padding primero, fondo despues")
+        }
     }
 }
