@@ -21,33 +21,42 @@ class MainActivity : ComponentActivity() {
         setContent {
             EjerciciosKotlinTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    FichaDeEstudiante(modifier = Modifier.padding(innerPadding))
+                    Column(modifier = Modifier.padding(innerPadding)) {
+                        DatoEstudiante("Nombre", "Ana")
+                        DatoEstudiante("Carrera", "Sistemas")
+                        DatoEstudiante("Anio", "1")
+                        Text(descripcionEdad(20))
+                    }
                 }
             }
         }
     }
 }
 
+
 @Composable
-fun FichaDeEstudiante(modifier: Modifier = Modifier) {
-    val nombre = "Felipe"
-    val edad = 20
-    val promedio = 8.25
-    val cursaProgramacion = true
-    val anioProximo = edad + 1
-    Column(modifier = modifier) {
-        Text("Nombre del estudiante: $nombre")
-        Text("Edad del estudiante: $edad")
-        Text("Promedio del estudiante: $promedio")
-        Text("Cursa programacion?: $cursaProgramacion")
-        Text("edad proxima?: $anioProximo")
+fun DatoEstudiante(etiqueta: String, valor: String) {
+    Text("$etiqueta $valor")
+}
+
+// Función Kotlin normal (sin @Composable): recibe un Int y devuelve un String.
+// No dibuja nada por sí sola, solo calcula texto — por eso después se muestra
+// con Text(descripcionEdad(...)) desde un composable.
+fun descripcionEdad(edad: Int): String {
+    // Desafío del profe Adrián: if como expresión, devuelve directo el String
+    // según la condición, sin necesidad de variables intermedias ni múltiples return.
+    return if (edad >= 18) {
+        "Edad: $edad anios (mayor de edad)"
+    } else {
+        "Edad: $edad anios (menor de edad)"
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun FichaDeEstudiantePreview() {
+fun DatoEstudiantePreview() {
     EjerciciosKotlinTheme {
-        FichaDeEstudiante()
+        DatoEstudiante("Nombre", "Ana")
     }
 }
