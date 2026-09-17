@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,11 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ejercicioskotlin.ui.theme.EjerciciosKotlinTheme
-import androidx.compose.foundation.layout.Row
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Button
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,17 +32,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .padding(all = 26.dp)
                     ) {
-                        Text("FICHA DEL ESTUDIANTE")
-                        DatoEstudiante("Nombre:", "Ana")
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ){
-                            DatoEstudiante("Carrera:","Sistemas")
-                            DatoEstudiante("Anio:","1")
-                        }
-                        Button({}) {
-                            Text("Guardar")
-                        }
+                        Contador()
                     }
                 }
             }
@@ -50,51 +40,29 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
-fun DatoEstudiante(etiqueta: String, valor: String) {
-    Text("$etiqueta $valor")
-}
+fun Contador() {
+    // remember + mutableStateOf: es lo que hace que Compose "observe" este valor
+    // y vuelva a dibujar (recomponer) el Text cuando cambia.
+    var contador by remember { mutableStateOf(0) }
 
+    Text("Valor: $contador")
 
-@Preview(showBackground = true)
-@Composable
-fun DatoEstudiantePreview() {
-    EjerciciosKotlinTheme {
-        DatoEstudiante("Nombre", "Ana")
+    Button(onClick = { contador++ }) {
+        Text("+1")
     }
-}
 
-// Experimento: background() ANTES de padding().
-// El fondo pinta TODO el Column, y el padding empuja el contenido hacia
-// adentro dejando ver el color alrededor del texto.
-@Preview(showBackground = true)
-@Composable
-fun OrdenModifierBackgroundPrimeroPreview() {
-    EjerciciosKotlinTheme {
-        Column(
-            modifier = Modifier
-                .background(Color.Blue)
-                .padding(16.dp)
-        ) {
-            Text("Fondo primero, padding despues")
+    Button(onClick = {
+        // No puede ser menor que cero: solo decrementa si contador es mayor a 0.
+        if (contador > 0) {
+            contador--
         }
+    }) {
+        Text("-1")
+    }
+
+    Button(onClick = { contador = 0 }) {
+        Text("Reiniciar")
     }
 }
 
-// Experimento: padding() ANTES de background().
-// El padding reserva espacio vacío (sin color todavía), y el background
-// solo pinta lo que queda después de ese espacio — queda un borde sin color.
-@Preview(showBackground = true)
-@Composable
-fun OrdenModifierPaddingPrimeroPreview() {
-    EjerciciosKotlinTheme {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .background(Color.Blue)
-        ) {
-            Text("Padding primero, fondo despues")
-        }
-    }
-}
