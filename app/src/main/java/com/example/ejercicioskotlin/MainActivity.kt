@@ -39,6 +39,8 @@ class MainActivity : ComponentActivity() {
 }
 
 // Función separada de la UI: no es @Composable, solo lógica pura.
+// Recibe datos, devuelve un resultado — no sabe nada de TextField, Button ni estado.
+// Por eso se puede poner un breakpoint acá y depurarla sin depender de la interfaz.
 fun calcular(a: Double, b: Double, operacion: String): Double {
     return when (operacion) {
         "sumar" -> a + b
@@ -54,6 +56,8 @@ fun Calculadora(modifier: Modifier = Modifier) {
     var textoB by remember { mutableStateOf("") }
     var resultado by remember { mutableStateOf("") }
 
+    // Función local: solo existe adentro de Calculadora, evita repetir la
+    // conversión toDoubleOrNull() en los 3 botones (sumar/restar/multiplicar).
     fun ejecutar(operacion: String) {
         val a = textoA.toDoubleOrNull()
         val b = textoB.toDoubleOrNull()
@@ -63,6 +67,7 @@ fun Calculadora(modifier: Modifier = Modifier) {
             return
         }
 
+        // Acá sí se llama a la función pura, pasándole los Double ya validados.
         val valorCalculado = calcular(a, b, operacion)
 
         // Parte C: log con etiqueta reconocible para filtrar en Logcat.
