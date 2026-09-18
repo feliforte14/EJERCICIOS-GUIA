@@ -30,12 +30,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun FichaDeEstudiante(modifier: Modifier = Modifier) {
+    // Todos val: son datos fijos de esta ficha, no cambian después de asignados.
+    // Kotlin infiere el tipo de cada uno mirando el valor (String, Int, Double, Boolean).
     val nombre = "Felipe"
     val edad = 20
     val promedio = 8.25
     val cursaProgramacion = true
+    // Variable calculada a partir de otra: no es un dato nuevo, es una expresión.
     val anioProximo = edad + 1
     Column(modifier = modifier) {
+        // "$variable": plantilla de String, interpola el valor directo adentro del texto.
         Text("Nombre del estudiante: $nombre")
         Text("Edad del estudiante: $edad")
         Text("Promedio del estudiante: $promedio")
