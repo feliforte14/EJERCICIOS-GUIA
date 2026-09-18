@@ -61,6 +61,8 @@ fun Contador() {
         Text("-1")
     }
 
+    // Reiniciar: reasigna el estado directo a 0, gatillando recomposición igual
+    // que ++ o -- (es la misma variable observada, solo cambia el valor asignado).
     Button(onClick = { contador = 0 }) {
         Text("Reiniciar")
     }
