@@ -34,6 +34,8 @@ fun Presentacion(modifier: Modifier = Modifier) {
     // en vez de apilarse verticalmente (esto es justo lo que pide probar el punto 3
     // de la experimentación).
     Column(modifier = modifier) {
+        // Tres textos fijos (sin parámetros): a diferencia de Greeting, acá no
+        // recibimos datos de afuera, están hardcodeados adentro del composable.
         Text(text = "Felipe")
         Text(text = "Ingeniería en Sistemas")
         Text(text = "Quiero aprender Kotlin")
@@ -43,6 +45,7 @@ fun Presentacion(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun PresentacionPreview() {
+    // Sin argumentos: Presentacion no recibe datos, así que no hace falta pasarle nada.
     EjerciciosKotlinTheme {
         Presentacion()
     }
