@@ -111,6 +111,9 @@ fun ListaTareas(modifier: Modifier = Modifier) {
     }
 }
 
+// TareaItem no toca la lista "tareas" directamente: recibe callbacks
+// (funciones) que ListaTareas le pasa, y solo los invoca. Así el composable
+// no necesita saber en qué índice está ni cómo se guarda la lista.
 @Composable
 fun TareaItem(
     tarea: Tarea,
