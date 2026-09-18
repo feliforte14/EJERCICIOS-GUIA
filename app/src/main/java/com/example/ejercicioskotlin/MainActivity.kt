@@ -36,6 +36,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DatoEstudiante(etiqueta: String, valor: String) {
+    // Componente reutilizable: etiqueta y valor son los dos "huecos" que cambian
+    // entre cada llamada (Nombre/Ana, Carrera/Sistemas, Anio/1) — el resto del
+    // formato queda fijo adentro de la función.
     Text("$etiqueta $valor")
 }
 
