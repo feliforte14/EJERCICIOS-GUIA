@@ -45,6 +45,8 @@ fun ClasificadorEdad(modifier: Modifier = Modifier) {
     var resultado by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(16.dp)) {
+        // value muestra el estado actual; onValueChange lo actualiza en cada tecla.
+        // Patrón unidireccional: usuario tipea -> evento -> cambia estado -> recompone.
         OutlinedTextField(
             value = nombre,
             onValueChange = { nombre = it },
@@ -56,18 +58,22 @@ fun ClasificadorEdad(modifier: Modifier = Modifier) {
             label = { Text("Ingrese edad:") }
         )
         Button(onClick = {
+            // toIntOrNull(): null safety. Si el texto no es un Int válido, devuelve
+            // null en vez de crashear (a diferencia de toInt()).
             val edadNumero = edadTexto.toIntOrNull()
+            // when como expresión: el chequeo de null va primero porque edadNumero
+            // es Int? (nullable) — Kotlin no deja comparar "null < 18" directo.
             resultado = when {
                 edadNumero == null -> "Error: no se ingreso nada"
                 edadNumero < 0 -> "Dato no valido"
                 edadNumero < 18 -> "Menor de edad"
                 else -> "Mayor de edad"
             }
-            // acá va la lógica: toIntOrNull() + el when
         }) {
             Text("Evaluar")
         }
-        Text("$resultado")
+        // resultado ya es String, no hace falta la plantilla "$resultado".
+        Text(resultado)
     }
 }
 
