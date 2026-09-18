@@ -62,6 +62,9 @@ fun ListaMaterias(modifier: Modifier = Modifier) {
         Text("Total de materias: ${materias.size}")
         Text("Materias aprobadas: ${materiasAprobadas.size}")
 
+        // LazyColumn: a diferencia de Column, solo dibuja las filas visibles en
+        // pantalla (no todas de una) — clave para listas largas. items() recorre
+        // la List y llama a MateriaItem por cada elemento.
         LazyColumn {
             items(materias) { materia ->
                 MateriaItem(materia = materia)
