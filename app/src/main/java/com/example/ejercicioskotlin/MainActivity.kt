@@ -29,17 +29,22 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(
                         modifier = Modifier
-                            .padding(innerPadding)
-                            .padding(all = 26.dp)
+                            .padding(innerPadding)   // espacio para no tapar barras del sistema
+                            .padding(all = 26.dp)    // espaciado exterior propio de la pantalla
                     ) {
                         Text("FICHA DEL ESTUDIANTE")
+                        // Datos organizados verticalmente: Column apila uno abajo del otro.
                         DatoEstudiante("Nombre:", "Ana")
+                        // Row: fila con dos elementos lado a lado (horizontal, no vertical).
+                        // spacedBy(16.dp) separa los dos DatoEstudiante para que no queden pegados.
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ){
                             DatoEstudiante("Carrera:","Sistemas")
                             DatoEstudiante("Anio:","1")
                         }
+                        // Button sin comportamiento relevante: onClick vacío, solo para que
+                        // exista visualmente en la pantalla.
                         Button({}) {
                             Text("Guardar")
                         }
