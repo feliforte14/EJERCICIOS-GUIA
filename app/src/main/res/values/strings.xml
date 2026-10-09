@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">EjerciciosKotlin</string>
+    <!-- Ejercicio 11: los textos visibles salen de acá y no del código Kotlin.
+         El "name" es la clave que usa R.string.<name> desde el código. -->
+    <string name="app_name">Mis Tareas</string>
+    <string name="titulo_tareas">Tareas de estudio</string>
+    <string name="nueva_tarea">Nueva tarea</string>
+    <string name="agregar">Agregar</string>
+    <string name="borrar_todas">Borrar todas</string>
+    <string name="eliminar">Eliminar</string>
+    <!-- %1$d es un argumento: stringResource(R.string.cantidad_tareas, n) reemplaza %1$d por n.
+         Así el idioma decide DÓNDE va el número dentro de la frase. -->
+    <string name="cantidad_tareas">Tareas: %1$d</string>
 </resources>

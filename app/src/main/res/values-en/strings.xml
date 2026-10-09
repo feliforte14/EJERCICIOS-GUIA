@@ -1,0 +1,12 @@
+<resources>
+    <!-- values-en es un "calificador" de idioma: si el celular está en inglés, Android usa
+         ESTE archivo en lugar de values/strings.xml. Las claves (name) son las mismas;
+         el código Kotlin no cambia en absoluto. -->
+    <string name="app_name">My Tasks</string>
+    <string name="titulo_tareas">Study tasks</string>
+    <string name="nueva_tarea">New task</string>
+    <string name="agregar">Add</string>
+    <string name="borrar_todas">Clear all</string>
+    <string name="eliminar">Delete</string>
+    <string name="cantidad_tareas">Tasks: %1$d</string>
+</resources>

@@ -1,5 +1,6 @@
 package com.example.ejercicioskotlin
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,10 +15,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -26,10 +29,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ejercicioskotlin.ui.theme.EjerciciosKotlinTheme
+
+// EJERCICIO 11 — Recursos Android y configuración visual.
+// Partimos de la lista de tareas del Ejercicio 10 y movemos TODOS los textos visibles
+// a res/values/strings.xml. Cambios respecto del Ej. 10:
+//   1) Cada Text("...") fijo pasó a Text(stringResource(R.string.xxx)).
+//   2) Se agregó res/values-en/strings.xml (traducción al inglés sin tocar este archivo).
+//   3) Se agregaron varios @Preview: claro, oscuro, pantalla chica e inglés.
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +56,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// Estado mínimo de la app (lo que pide dibujar en papel antes de codear):
-// 1) el texto que se está escribiendo ahora mismo
-// 2) la colección de tareas ya agregadas
 data class Tarea(
     val texto: String,
     val completada: Boolean = false
@@ -55,10 +63,8 @@ data class Tarea(
 
 @Composable
 fun ListaTareas(modifier: Modifier = Modifier) {
+    // Estado mínimo (igual que en el Ej. 10): el texto que se escribe y la colección de tareas.
     var textoNuevo by remember { mutableStateOf("") }
-    // mutableStateListOf: como mutableStateOf pero para listas — Compose
-    // recompone cuando agregás/quitás elementos, no solo cuando reemplazás
-    // la lista entera.
     val tareas = remember { mutableStateListOf<Tarea>() }
 
     Column(
@@ -66,42 +72,45 @@ fun ListaTareas(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
+        // stringResource busca la clave en el strings.xml que corresponda al idioma del
+        // dispositivo (values/ por defecto, values-en/ si el celular está en inglés).
+        // Solo se puede llamar desde un @Composable; fuera de uno se usa context.getString(...).
+        Text(
+            text = stringResource(R.string.titulo_tareas),
+            style = MaterialTheme.typography.headlineMedium
+        )
+
         OutlinedTextField(
             value = textoNuevo,
             onValueChange = { textoNuevo = it },
-            label = { Text("Nueva tarea") },
+            label = { Text(stringResource(R.string.nueva_tarea)) },
             modifier = Modifier.fillMaxWidth()
         )
 
         Row {
             Button(onClick = {
-                // No agregar cadenas vacías (ni solo espacios).
                 if (textoNuevo.isNotBlank()) {
                     tareas.add(Tarea(texto = textoNuevo))
                     textoNuevo = ""
                 }
             }) {
-                Text("Agregar")
+                Text(stringResource(R.string.agregar))
             }
-
-            // Desafío: botón "Borrar todas".
             Button(onClick = { tareas.clear() }) {
-                Text("Borrar todas")
+                Text(stringResource(R.string.borrar_todas))
             }
         }
 
-        // Desafío: mostrar la cantidad de tareas.
-        Text("Tareas: ${tareas.size}")
+        // Texto con argumento: en strings.xml está "Tareas: %1$d" y acá le pasamos el número.
+        // El 2º parámetro de stringResource reemplaza a %1$d.
+        Text(stringResource(R.string.cantidad_tareas, tareas.size))
 
         LazyColumn {
             itemsIndexed(tareas) { index, tarea ->
                 TareaItem(
                     tarea = tarea,
                     onToggleCompletada = {
-                        // Desafío: marcar una tarea como completada.
-                        // Tarea es inmutable (data class con val), así que
-                        // reemplazamos el elemento por una copia con el
-                        // campo cambiado, en vez de mutarlo directo.
+                        // Tarea es inmutable: se reemplaza por una copia con el campo cambiado.
                         tareas[index] = tarea.copy(completada = !tarea.completada)
                     },
                     onEliminar = { tareas.removeAt(index) }
@@ -111,9 +120,6 @@ fun ListaTareas(modifier: Modifier = Modifier) {
     }
 }
 
-// TareaItem no toca la lista "tareas" directamente: recibe callbacks
-// (funciones) que ListaTareas le pasa, y solo los invoca. Así el composable
-// no necesita saber en qué índice está ni cómo se guarda la lista.
 @Composable
 fun TareaItem(
     tarea: Tarea,
@@ -132,22 +138,69 @@ fun TareaItem(
                 checked = tarea.completada,
                 onCheckedChange = { onToggleCompletada() }
             )
+            // tarea.texto NO sale de recursos: es un dato que escribe el usuario, no un texto
+            // fijo de la interfaz. Los recursos son para el texto "de la app", no para sus datos.
             Text(
                 text = tarea.texto,
                 textDecoration = if (tarea.completada) TextDecoration.LineThrough else TextDecoration.None
             )
         }
 
-        IconButton(onClick = onEliminar) {
-            Text("✕")
+        // Antes era un IconButton con "✕" hardcodeado; ahora el texto es traducible.
+        TextButton(onClick = onEliminar) {
+            Text(stringResource(R.string.eliminar))
         }
     }
 }
 
-@Preview(showBackground = true)
+// ───────────────────────── PREVIEWS ─────────────────────────
+// Un @Preview dibuja el composable dentro de Android Studio, SIN emulador. Poner varios
+// permite ver distintas configuraciones a la vez. Se envuelven en Surface para que el
+// fondo y el color del texto sigan el tema (si no, en modo oscuro el texto no se vería).
+
+// 1) Configuración normal (modo claro, idioma por defecto).
+@Preview(name = "Claro", showBackground = true)
 @Composable
 fun ListaTareasPreview() {
     EjerciciosKotlinTheme {
-        ListaTareas()
+        Surface { ListaTareas() }
+    }
+}
+
+// 2) Modo oscuro: uiMode le dice al preview que simule el modo noche del sistema.
+@Preview(
+    name = "Oscuro",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun ListaTareasOscuroPreview() {
+    EjerciciosKotlinTheme {
+        Surface { ListaTareas() }
+    }
+}
+
+// 3) Otro idioma: el mismo composable, leyendo values-en/strings.xml. Prueba que el código
+//    no cambia para traducir.
+@Preview(name = "Inglés", showBackground = true, locale = "en")
+@Composable
+fun ListaTareasInglesPreview() {
+    EjerciciosKotlinTheme {
+        Surface { ListaTareas() }
+    }
+}
+
+// 4) Pantalla chica y fuente grande: para chequear que nada se corte.
+@Preview(
+    name = "Pantalla chica + fuente grande",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 560,
+    fontScale = 1.5f
+)
+@Composable
+fun ListaTareasChicaPreview() {
+    EjerciciosKotlinTheme {
+        Surface { ListaTareas() }
     }
 }
