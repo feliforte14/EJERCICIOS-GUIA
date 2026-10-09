@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Course organizer</string>
+    <string name="titulo_pantalla">Course organizer</string>
+    <string name="campo_titulo">Title</string>
+    <string name="campo_materia">Subject</string>
+    <string name="prioridad">Priority:</string>
+    <string name="prioridad_baja">Low</string>
+    <string name="prioridad_media">Medium</string>
+    <string name="prioridad_alta">High</string>
+    <string name="agregar">Add</string>
+    <string name="eliminar">Delete</string>
+    <string name="error_campos">Fill in the title and the subject</string>
+    <string name="pendientes">Pending: %1$d</string>
+    <string name="sin_actividades">There are no activities yet</string>
+    <string name="sin_resultados">No activities for this filter</string>
+    <string name="filtro_todas">All</string>
+    <string name="filtro_pendientes">Pending</string>
+    <string name="filtro_completadas">Completed</string>
+    <string name="compartir_resumen">Share summary</string>
+    <string name="resumen_encabezado">Pending activities (%1$d):</string>
+    <string name="item_detalle">%1$s · priority %2$s</string>
+</resources>

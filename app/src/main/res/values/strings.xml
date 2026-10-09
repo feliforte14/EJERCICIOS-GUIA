@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">EjerciciosKotlin</string>
+    <!-- Ejercicio 13 · Etapa 4 (calidad): todos los textos visibles viven acá. -->
+    <string name="app_name">Organizador de cursada</string>
+    <string name="titulo_pantalla">Organizador de cursada</string>
+    <string name="campo_titulo">Título</string>
+    <string name="campo_materia">Materia</string>
+    <string name="prioridad">Prioridad:</string>
+    <string name="prioridad_baja">Baja</string>
+    <string name="prioridad_media">Media</string>
+    <string name="prioridad_alta">Alta</string>
+    <string name="agregar">Agregar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="error_campos">Completá el título y la materia</string>
+    <string name="pendientes">Pendientes: %1$d</string>
+    <string name="sin_actividades">Todavía no hay actividades</string>
+    <string name="sin_resultados">No hay actividades para este filtro</string>
+    <string name="filtro_todas">Todas</string>
+    <string name="filtro_pendientes">Pendientes</string>
+    <string name="filtro_completadas">Completadas</string>
+    <string name="compartir_resumen">Compartir resumen</string>
+    <string name="resumen_encabezado">Actividades pendientes (%1$d):</string>
+    <string name="item_detalle">%1$s · prioridad %2$s</string>
 </resources>
