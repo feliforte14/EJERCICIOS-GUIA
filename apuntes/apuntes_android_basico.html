@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Apuntes Android Básico – DA1</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  :root { --azul:#1d3a8a; --azul-claro:#eef2fb; --verde:#1f6b3a; --verde-claro:#eef7f0;
+          --ambar:#7a5a00; --ambar-claro:#fff8e1; --gris:#555; --borde:#cfd6e4; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt;
+         line-height: 1.45; color: #1a1a1a; background:#fff; margin:0; }
+  header.portada { border-bottom: 3px solid var(--azul); padding-bottom: 10px; margin-bottom: 18px; }
+  header.portada h1 { margin:0; font-size: 20pt; color: var(--azul); }
+  header.portada p { margin: 4px 0 0; color: var(--gris); }
+  h2 { font-size: 15pt; color: var(--azul); margin: 22px 0 6px; border-bottom: 1px solid var(--borde); padding-bottom: 4px; }
+  h3 { font-size: 11.5pt; margin: 16px 0 6px; }
+  p { margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.8pt; page-break-inside: avoid; }
+  th, td { border: 1px solid var(--borde); padding: 5px 7px; vertical-align: top; text-align: left; }
+  th { background: var(--azul-claro); }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 9pt; background: #f2f4f8; padding: 0 3px; border-radius: 3px; }
+  pre { font-family: "SF Mono", Menlo, monospace; font-size: 8.4pt; background: #f6f7fa; border: 1px solid var(--borde);
+        border-radius: 6px; padding: 9px 11px; overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere; page-break-inside: avoid; margin: 8px 0; }
+  .caja { border-radius: 6px; padding: 8px 12px; margin: 10px 0; page-break-inside: avoid; }
+  .clave { background: var(--azul-claro); border-left: 4px solid var(--azul); }
+  .regla { background: var(--verde-claro); border-left: 4px solid var(--verde); }
+  .ojo { background: var(--ambar-claro); border-left: 4px solid var(--ambar); }
+  .caja strong.titulo { display:block; margin-bottom: 3px; }
+  .tag { display:inline-block; padding: 0 6px; border-radius: 10px; font-size: 8.8pt; font-weight: 600; }
+  .v { background:#e3ecff; color:#1d3a8a; } .vm { background:#e5f5ea; color:#1f6b3a; } .r { background:#fff0d6; color:#7a5a00; }
+  ul, ol { margin: 4px 0 8px; padding-left: 20px; }
+  li { margin: 2px 0; }
+  .salto { page-break-before: always; }
+  .figs { display:flex; gap:10px; align-items:flex-end; justify-content:center; margin:10px 0; break-inside: avoid; }
+  .figs figure { margin:0; flex:0 0 auto; text-align:center; font-size:8.6pt; color:var(--gris); }
+  .figs img { border:1px solid var(--borde); border-radius:6px; display:block; margin:0 auto 4px; }
+  
+  .pocas { background:#f3f0ff; border-left:4px solid #5b3fb8; }
+  .novato { background:#fff4ec; border-left:4px solid #c2561a; }
+  .novato ul { margin-bottom:0; }
+  .novato li { margin:4px 0; }
+  .teoria { background:#eef7fb; border-left:4px solid #1b6f8f; }
+  h2.parte { font-size: 18pt; color:#fff; background: var(--azul); border:0; padding: 10px 14px; border-radius: 6px; }
+  h2.anexo { margin-top: 30px; }
+  .indice { border:1px solid var(--borde); border-radius:6px; padding: 8px 14px; margin: 14px 0; }
+  .indice h3 { margin: 4px 0 6px; } .indice ol { margin:0; } .indice ul { margin: 2px 0 4px; padding-left: 18px; font-size: 9.6pt; }
+  .temas { background:#f3f0ff; border-left:4px solid #5b3fb8; }
+  .bloque { break-inside: avoid; page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+</style>
+</head>
+<body>
+<header class="portada">
+  <h1>Apuntes – Android Studio, Kotlin y Jetpack Compose</h1>
+  <p>Desarrollo de Aplicaciones I · UADE · Trabajo Práctico “Práctica Incremental” (Guía de Ejercicios 00, v1.2)</p>
+  <p>Repositorio: <code>EJERCICIOS-GUIA</code> · una rama por ejercicio (<code>ejercicio-01-…</code> a <code>ejercicio-13-…</code>) · Felipe Forte</p>
+</header>
+<p><strong>Cómo leer estos apuntes.</strong> La <strong>Parte 1</strong> explica la teoría que hace falta para la guía y resume los temas más
+importantes. La <strong>Parte 2</strong> recorre los ejercicios uno por uno: qué pide la guía, “En pocas palabras”, <strong>“Importante a
+considerar”</strong>, el código real de la rama, las pruebas en el emulador, las preguntas de la guía y el criterio de finalización. Al final
+hay <strong>anexos</strong> (organización, cómo probar, preguntas transversales, registro de IA, revisión del código) y el <strong>glosario</strong>.</p>
+<p>En la tabla “Lo que pide la guía”: ✅ cumplido y probado en el emulador · 🔧 corregido en la revisión · 🧑‍💻 se demuestra en vivo en Android Studio.</p>
+<div class="indice"><h3>Contenido</h3><ol><li><strong>Parte 1 · Introducción teórica</strong></li><li><strong>Parte 2 · Ejercicios</strong><ul><li>Ejercicio 1 — Primer proyecto, emulador y recorrido del entorno</li><li>Ejercicio 2 — Primeros pasos con funciones @Composable</li><li>Ejercicio 3 — Kotlin: val, var, tipos y plantillas de String</li><li>Ejercicio 4 — Funciones, parámetros y componentes reutilizables</li><li>Ejercicio 5 — Column, Row, Modifier y Material 3</li><li>Ejercicio 6 — Estado, botones y recomposición: contador</li><li>Ejercicio 7 — TextField, if/when y null safety</li><li>Ejercicio 8 — Calculadora pequeña, Logcat y debugger</li><li>Ejercicio 9 — data class, List y LazyColumn</li><li>Ejercicio 10 — Lista editable: tareas del estudiante</li></ul></li><li><strong>Anexos</strong><ul><li>Anexo A · Organización del repositorio</li><li>Anexo B · Cómo ejecutar y probar</li><li>Anexo C · Preguntas transversales</li><li>Anexo D · Registro de uso de IA (pueden pedirlo en parciales y finales)</li><li>Anexo E · Revisión del código contra la guía</li></ul></li><li><strong>Glosario</strong></li></ol></div><div class="caja ojo"><strong class="titulo">Versión de esta rama</strong>Este PDF llega hasta el <strong>Ejercicio 10</strong>. La versión completa está en la rama <code>ejercicio-13-organizador-cursada</code>.</div>
+
+<h2 class="salto parte">Parte 1 · Introducción teórica</h2>
+
+<p>Fuentes: <em>Resumen Teoría Android — DA1</em>, <em>Apuntes de Clase: Jetpack Compose</em>, <em>Ciclo de vida Android</em> y la introducción
+de la guía. La guía no presupone conocimiento previo de Kotlin: el objetivo es <strong>leer código, navegar Android Studio, reconocer el SDK de
+Android, usar el emulador y entender el modelo declarativo de Compose</strong>.</p>
+
+<h3>1. Android y el entorno de desarrollo</h3>
+<p>Android es un sistema operativo móvil en capas: <strong>kernel Linux</strong> (memoria, procesos, drivers) → <strong>HAL</strong> (un módulo por
+hardware) → <strong>librerías</strong> → <strong>Application Framework</strong> (Activity Manager, Window Manager…) → <strong>aplicaciones</strong>. Como
+desarrolladores trabajamos arriba de todo, con el <strong>Android SDK</strong>. Cada app corre aislada (<em>sandbox</em>) y necesita permisos
+para recursos sensibles.</p>
+<table><tr><th>Pieza</th><th>Qué es</th></tr>
+<tr><td>Android Studio</td><td>IDE para escribir, compilar, ejecutar y depurar (Build, Run, Logcat, Debugger, Device Manager).</td></tr>
+<tr><td>Gradle</td><td>Compila el proyecto y baja bibliotecas. Se configura en <code>build.gradle.kts</code>.</td></tr>
+<tr><td>AVD / emulador</td><td>El AVD es la configuración de un teléfono virtual; el emulador es el programa que lo ejecuta.</td></tr>
+<tr><td>Manifest</td><td><code>AndroidManifest.xml</code>: nombre, ícono, permisos y Activity de inicio (MAIN + LAUNCHER).</td></tr>
+<tr><td>Compilación</td><td><code>.kt</code> → <code>.class</code> → <code>.dex</code> (D8/R8) → APK firmado → el runtime ART lo ejecuta (JIT + AOT).</td></tr></table>
+
+<h3>2. Activity y ciclo de vida</h3>
+<p>En Android la app <strong>no es dueña de su proceso</strong>: el sistema puede pausarla, detenerla o matarla para liberar memoria. Por eso
+la <code>Activity</code> pasa por estados con callbacks en pares simétricos:</p>
+<pre>onCreate()  ↔ onDestroy()   existencia      (en onCreate va setContent { ... })
+onStart()   ↔ onStop()      visibilidad
+onResume()  ↔ onPause()     foco / interacción</pre>
+<p>Al <strong>rotar</strong>, la Activity se destruye y se vuelve a crear: lo que estaba solo en memoria de la pantalla se pierde (esto vuelve en
+las guías de persistencia y MVVM).</p>
+
+<h3>3. Kotlin, lo mínimo para empezar</h3>
+<ul>
+<li><code>val</code> (no se reasigna) y <code>var</code> (se puede reasignar). El tipo se <strong>infiere</strong>: <code>val edad = 20</code> es <code>Int</code>.</li>
+<li>Tipos básicos: <code>String</code>, <code>Int</code>, <code>Double</code>, <code>Boolean</code>. Plantillas: <code>"Edad: $edad"</code>, <code>"${edad + 1}"</code>.</li>
+<li>Funciones con parámetros y retorno: <code>fun descripcionEdad(edad: Int): String</code>. <code>if</code> y <code>when</code> devuelven valores.</li>
+<li><strong>Null safety</strong>: <code>Int?</code> puede valer <code>null</code>; <code>"abc".toIntOrNull()</code> devuelve <code>null</code> en vez de romper.</li>
+<li><code>data class</code> para datos (genera <code>equals</code>, <code>toString</code>, <code>copy</code>); <code>List</code>, <code>filter</code>, <code>size</code> para colecciones.</li>
+</ul>
+
+<h3>4. Jetpack Compose: UI = f(estado)</h3>
+<p>Compose construye la interfaz con funciones Kotlin marcadas con <code>@Composable</code>. En lugar de buscar una vista y modificarla
+(enfoque imperativo con XML), se describe <strong>qué</strong> debe mostrarse según el estado actual (enfoque declarativo).</p>
+<pre>class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent { MaterialTheme { PantallaPrincipal() } }    // Activity → setContent → composables
+    }
+}</pre>
+<ul>
+<li><strong>Layouts</strong>: <code>Column</code> (vertical), <code>Row</code> (horizontal), <code>Box</code> (superpone), <code>LazyColumn</code> (listas largas).</li>
+<li><strong>Modifier</strong>: tamaño, márgenes, fondo, clics. Se encadena y <strong>el orden importa</strong>. Un composable reutilizable recibe <code>modifier: Modifier = Modifier</code>.</li>
+<li><strong>Estado</strong>: <code>var x by remember { mutableStateOf(...) }</code>. Al cambiar, Compose <strong>recompone</strong> lo que lo lee.</li>
+<li><strong>State hoisting</strong>: el padre guarda el estado y el hijo recibe el valor y un callback (<code>onValueChange</code>, <code>onClick</code>).</li>
+<li><strong>Material 3</strong>: componentes (<code>Button</code>, <code>Card</code>, <code>Checkbox</code>, <code>Switch</code>…) y tema (colores, tipografía, modo oscuro).</li>
+<li><strong>@Preview</strong>: dibuja un composable en el editor sin emulador; sirve para ver varias configuraciones a la vez.</li>
+</ul>
+<pre>Evento (onClick) → cambia el estado → Compose recompone → la pantalla muestra el valor nuevo</pre>
+
+<h3>5. Recursos y Android SDK</h3>
+<ul>
+<li><strong>Recursos</strong>: los textos fijos van en <code>res/values/strings.xml</code> y se leen con <code>stringResource(R.string.x)</code>. Android elige
+la variante según idioma o tema (<code>values-en/</code>, modo oscuro) sin tocar el código.</li>
+<li><strong>Context</strong>: el puente con el sistema. En Compose: <code>LocalContext.current</code>.</li>
+<li><strong>Intent</strong>: pedido al sistema (“compartí este texto”, “abrí este link”). Implícito: el sistema elige qué app lo atiende.</li>
+<li><strong>Logcat y Debugger</strong>: <code>Log.d("ETIQUETA", ...)</code> para seguir la ejecución; breakpoints para pausar y mirar variables.</li>
+</ul>
+
+<h3>¿Kotlin, Compose o Android SDK? (pregunta de toda la guía)</h3>
+<table><tr><th>Kotlin</th><th>Jetpack Compose</th><th>Android SDK</th></tr>
+<tr><td><code>val</code>, <code>var</code>, <code>fun</code>, <code>if</code>, <code>when</code>, <code>data class</code>, <code>List</code>, <code>filter</code>, <code>toIntOrNull()</code>, <code>apply</code></td>
+<td><code>@Composable</code>, <code>@Preview</code>, <code>Text</code>, <code>Button</code>, <code>Column</code>, <code>Row</code>, <code>Modifier</code>, <code>remember</code>, <code>mutableStateOf</code>, <code>LazyColumn</code>, <code>stringResource</code>, <code>LocalContext</code></td>
+<td><code>Activity</code>, <code>Context</code>, <code>Intent</code>, <code>Uri</code>, <code>Log</code>, <code>R.string</code>, <code>AndroidManifest.xml</code></td></tr></table>
+<div class="caja temas"><strong class="titulo">Temas más importantes a considerar</strong><ol>
+<li><strong>UI = f(estado)</strong>: la pantalla es consecuencia del estado; para cambiar lo que se ve, se cambia el estado.</li>
+<li><strong>Evento → estado → recomposición</strong>: sin <code>mutableStateOf</code> Compose no se entera; sin <code>remember</code> el valor se reinicia.</li>
+<li><strong>Separar datos, lógica y UI</strong>: <code>data class</code> y funciones puras (calcular, validar) fuera de los composables.</li>
+<li><strong>Null safety</strong>: todo lo que viene del usuario es texto y puede no ser válido (<code>toIntOrNull</code>, <code>isBlank</code>).</li>
+<li><strong>Modifier y layouts</strong>: Column/Row/LazyColumn y el orden de los modificadores.</li>
+<li><strong>Recursos</strong> para textos fijos y <strong>Previews</strong> para probar configuraciones.</li>
+<li><strong>Context e Intents</strong>: la puerta al Android SDK.</li>
+<li><strong>Diagnosticar</strong> con Logcat y breakpoints antes de cambiar código al azar.</li>
+<li><strong>La IA como tutor</strong>: poder explicar cada línea; en parciales y finales pueden pedir el registro de uso de IA.</li>
+</ol></div>
+<div class="caja clave"><strong class="titulo">La estrategia de trabajo de la guía</strong>Leer, modificar poco, ejecutar, observar, depurar, explicar y recién después ampliar la solución.</div>
+
+<h2 class="salto parte">Parte 2 · Ejercicios</h2>
+<p>Cada ejercicio vive en su propia rama del repositorio y contiene solo el código de ese ejercicio (en <code>MainActivity.kt</code>). Las pruebas se hicieron en un emulador Pixel 8.</p>
+<h2 class="salto">Ejercicio 1 — Primer proyecto, emulador y recorrido del entorno</h2>
+<p><strong>Consigna:</strong> Recorrer el panel Project, ubicar <code>MainActivity.kt</code>, <code>AndroidManifest.xml</code> y el Gradle del módulo <code>app</code>, crear un AVD, ejecutar y ubicar dónde se ve la compilación. Después cambiar el texto a <em>Hola Android – &lt;nombre&gt;</em>.<br>Rama: <code>ejercicio-01-explorar-ide</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Recorrer la vista Android y ubicar MainActivity.kt, AndroidManifest.xml y el Gradle del módulo</td><td style="text-align:center">🧑‍💻</td><td>Tabla de ubicaciones en este ejercicio</td></tr><tr><td>Abrir Device Manager y crear un AVD</td><td style="text-align:center">🧑‍💻</td><td>Pixel 8 virtual</td></tr><tr><td>Ejecutar la app e identificar dónde aparece la compilación</td><td style="text-align:center">✅</td><td>Ventana <em>Build</em>; la app corre en el AVD</td></tr><tr><td>Mostrar “Hola Android – &lt;nombre&gt;”</td><td style="text-align:center">🔧</td><td><code>Text("Hola Android – $name")</code></td></tr><tr><td>Responder las 5 preguntas</td><td style="text-align:center">✅</td><td>Más abajo</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Primer contacto con Android Studio: dónde está cada archivo, cómo se crea el teléfono virtual y cómo se ejecuta la app. El código de la rama está <strong>comentado línea por línea</strong> (onCreate, setContent, tema, Scaffold, innerPadding, @Composable, @Preview) y muestra <strong>“Hola Android – Felipe”</strong>.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong>Vista Android del panel Project:</strong> agrupa los archivos por tipo (manifests, kotlin+java, res, Gradle Scripts) aunque en disco estén en otras carpetas.</li><li><strong>Dónde se ve la compilación:</strong> en la ventana <em>Build</em> (abajo). La ejecución y los mensajes de la app, en <em>Run</em> y <em>Logcat</em>.</li><li><strong><code>setContent { }</code></strong> reemplaza al viejo <code>setContentView(R.layout...)</code>: todo lo de adentro es la interfaz en Compose.</li><li><strong><code>innerPadding</code></strong> es el espacio que deja el <code>Scaffold</code> para no quedar debajo de la barra de estado; por eso se pasa como <code>Modifier.padding(innerPadding)</code>.</li><li><strong>MAIN y LAUNCHER</strong> (en el Manifest) indican que esa Activity es la que abre el ícono de la app.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()                      // dibuja detrás de las barras del sistema
+        setContent {                            // desde acá, interfaz en Compose
+            EjerciciosKotlinTheme {             // colores y tipografía de la app
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -&gt;
+                    Greeting(name = "Felipe", modifier = Modifier.padding(innerPadding))
+                }
+            }
+        }
+    }
+}
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(text = "Hola Android – $name", modifier = modifier)
+}</pre><div class="figs"><figure><img src="img/ej01.png" style="height:120px"><br>Ejecutado en el AVD: “Hola Android – Felipe”</figure></div><table><tr><th>Archivo o herramienta</th><th>Dónde está</th></tr>
+<tr><td><code>MainActivity.kt</code></td><td>app → kotlin+java → com.example.ejercicioskotlin</td></tr>
+<tr><td><code>AndroidManifest.xml</code></td><td>app → manifests</td></tr>
+<tr><td>Gradle del módulo</td><td>Gradle Scripts → <code>build.gradle.kts (Module :app)</code></td></tr>
+<tr><td>Device Manager</td><td>barra lateral derecha (ícono de teléfono) o <em>Tools → Device Manager</em></td></tr></table>
+<div class="caja regla"><strong class="titulo">Corregido en la rama</strong>Quedaba la plantilla <code>"Hello $name!"</code>; se cambió a <code>"Hola Android – $name"</code> como pide la consigna.</div>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Qué archivo contiene el código Kotlin principal?</strong><br><code>MainActivity.kt</code>: tiene la Activity que arranca la app y los composables de la pantalla.</p>
+<p><strong>2. ¿Qué diferencia hay entre hacer Run y abrir solamente un Preview?</strong><br>Run compila, instala y ejecuta la app completa en el AVD (con su ciclo de vida, clics, Intents). Preview solo dibuja un composable dentro de Android Studio: es más rápido pero no ejecuta la app.</p>
+<p><strong>3. ¿Qué es un AVD? ¿Es lo mismo que el emulador?</strong><br>No. El AVD es la configuración de un dispositivo virtual (modelo, pantalla, versión de Android); el emulador es el programa que lo hace correr.</p>
+<p><strong>4. ¿Qué API de Android utiliza el dispositivo virtual?</strong><br>Se ve en Device Manager, columna API. (Las pruebas de estos apuntes se hicieron en un <em>Pixel 8</em> virtual.)</p>
+<p><strong>5. ¿Qué ocurre si el AVD está apagado cuando se presiona Run?</strong><br>Android Studio lo inicia automáticamente y, cuando terminó de arrancar, instala y abre la app (tarda más la primera vez).</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ La app corre en un AVD con el texto personalizado (probado). Señalar los cuatro archivos o herramientas se demuestra en Android Studio (tabla de arriba).</div>
+
+<h2 class="salto">Ejercicio 2 — Primeros pasos con funciones @Composable</h2>
+<p><strong>Consigna:</strong> Crear <code>Presentacion()</code> con tres textos (nombre, carrera, tecnología a aprender), usarla en la pantalla y en un <code>@Preview</code>. Experimentar: quitar <code>@Composable</code>, escribir mal <code>Text</code>, poner dos <code>Text</code> sin layout.<br>Rama: <code>ejercicio-02-presentacion</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Composable <code>Presentacion</code> con tres textos (nombre, carrera, tecnología)</td><td style="text-align:center">✅</td><td><code>Presentacion()</code> con <code>Column</code></td></tr><tr><td>Usarla desde la interfaz principal</td><td style="text-align:center">✅</td><td><code>setContent</code> → <code>Presentacion(...)</code></td></tr><tr><td>Función con <code>@Preview</code></td><td style="text-align:center">✅</td><td><code>PresentacionPreview()</code></td></tr><tr><td>Experimentación: quitar @Composable, escribir mal Text, dos Text sin layout</td><td style="text-align:center">🧑‍💻</td><td>Errores esperados explicados en las aclaraciones</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Se crea el primer composable propio y se lo usa en dos lugares: la app y el Preview. Se agregó un <code>Column</code> porque, sin layout, los textos se dibujan uno encima del otro.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong>Sin <code>@Composable</code></strong> el compilador marca error en <code>Text(...)</code>: “@Composable invocations can only happen from the context of a @Composable function”.</li><li><strong>Escribir mal <code>Text</code></strong> (ej. <code>Txt</code>) da “Unresolved reference”: el nombre no existe.</li><li><strong>Dos <code>Text</code> sin layout</strong> se superponen en la esquina; <code>Column</code> los apila verticalmente.</li><li><strong>El Preview es otra función</strong> (<code>PresentacionPreview</code>) que solo existe para el editor; la app no la usa.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>@Composable
+fun Presentacion(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Text(text = "Felipe")
+        Text(text = "Ingeniería en Sistemas")
+        Text(text = "Quiero aprender Kotlin")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PresentacionPreview() {
+    EjerciciosKotlinTheme { Presentacion() }
+}</pre><div class="figs"><figure><img src="img/ej02.png" style="height:120px"><br>En el emulador</figure></div>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Por qué una función @Composable puede llamar a Text() y una común no?</strong><br>Porque <code>Text</code> también es @Composable: necesita el contexto de composición que Compose le pasa solo a otras funciones @Composable. Una función común no lo tiene.</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ <code>Presentacion()</code> se usa desde la pantalla de la app y desde un <code>@Preview</code>.</div>
+
+<h2 class="salto">Ejercicio 3 — Kotlin: val, var, tipos y plantillas de String</h2>
+<p><strong>Consigna:</strong> Pantalla “Ficha del estudiante” con datos de distintos tipos mostrados con plantillas de String, más una variable calculada. Parte B: tipos explícitos e inferidos.<br>Rama: <code>ejercicio-03-tipos-de-datos</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Ficha con datos <code>val</code> de distintos tipos</td><td style="text-align:center">✅</td><td>String, Int, Double, Boolean</td></tr><tr><td>Mostrarlos con plantillas de String</td><td style="text-align:center">✅</td><td><code>"Nombre: $nombre"</code></td></tr><tr><td>Variable calculada y frase que combine texto y expresión</td><td style="text-align:center">🔧</td><td><code>anioProximo</code> y <code>"... ${edad + 1} años"</code></td></tr><tr><td>Parte B: variables con tipo explícito y comparación</td><td style="text-align:center">🔧</td><td><code>val materias: Int = 5</code>, <code>val ciudad: String</code></td></tr><tr><td>Responder las 4 preguntas</td><td style="text-align:center">✅</td><td>Más abajo</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Se declaran datos de cuatro tipos (<code>String</code>, <code>Int</code>, <code>Double</code>, <code>Boolean</code>) con <code>val</code>, uno calculado (<code>edad + 1</code>), y se muestran con <code>"$variable"</code>.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong><code>val</code></strong> no se puede reasignar; <strong><code>var</code></strong> sí. Por defecto conviene <code>val</code>.</li><li><strong>Inferencia de tipos:</strong> en <code>val edad = 20</code> Kotlin deduce que es <code>Int</code> mirando el valor. Es lo mismo que escribir <code>val edad: Int = 20</code>.</li><li><strong><code>"$edad"</code></strong> inserta el valor; para expresiones se usan llaves: <code>"${edad + 1}"</code>.</li><li><strong><code>8.25</code> es Double</strong> (con decimales); <code>true</code>/<code>false</code> es Boolean.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>val nombre = "Felipe"          // String
+val edad = 20                  // Int
+val promedio = 8.25            // Double
+val cursaProgramacion = true   // Boolean
+val anioProximo = edad + 1     // calculada
+val materias: Int = 5          // Parte B: tipo explícito
+val ciudad: String = "Cordoba"
+
+Text("Nombre del estudiante: $nombre")
+Text("edad proxima?: $anioProximo")
+Text("El año que viene $nombre va a tener ${edad + 1} años")   // texto + expresión</pre><div class="figs"><figure><img src="img/ej03.png" style="height:190px"><br>Datos, expresión calculada y Parte B</figure></div><p><strong>Parte B</strong> (agregada a la rama): <code>val materias: Int = 5</code> y <code>val ciudad: String = "Cordoba"</code> son equivalentes a escribirlos sin el tipo; el tipo explícito sirve para documentar o cuando todavía no hay valor inicial.</p>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Cuándo usarías val?</strong><br>Para todo dato que no cambia después de asignarse (la mayoría). Hace el código más predecible.</p>
+<p><strong>2. ¿Cuándo sería necesario var?</strong><br>Cuando el valor tiene que cambiar, por ejemplo un contador que se incrementa.</p>
+<p><strong>3. ¿Qué significa que Kotlin “infiera” un tipo?</strong><br>Que lo deduce del valor asignado, sin que haya que escribirlo.</p>
+<p><strong>4. ¿Por qué "20" y 20 no representan lo mismo?</strong><br><code>"20"</code> es un <code>String</code> (texto: no se puede sumar como número) y <code>20</code> un <code>Int</code>. <code>"20" + 1</code> da <code>"201"</code>; <code>20 + 1</code> da <code>21</code>.</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ Cinco datos y una expresión calculada en pantalla, con el tipo de cada variable justificado.</div>
+
+<h2 class="salto">Ejercicio 4 — Funciones, parámetros y componentes reutilizables</h2>
+<p><strong>Consigna:</strong> Composable reutilizable <code>DatoEstudiante(etiqueta, valor)</code> usado varias veces y una función Kotlin común <code>descripcionEdad(edad): String</code>. Desafío: indicar mayor/menor de edad con <code>if</code>.<br>Rama: <code>ejercicio-04-funciones-con-parametros</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Composable reutilizable <code>DatoEstudiante(etiqueta, valor)</code></td><td style="text-align:center">✅</td><td>Usado tres veces</td></tr><tr><td>Función Kotlin no composable <code>descripcionEdad(edad): String</code></td><td style="text-align:center">✅</td><td>Mostrada con <code>Text(...)</code></td></tr><tr><td>Desafío: indicar mayor de edad con <code>if</code></td><td style="text-align:center">✅</td><td><code>return if (edad &gt;= 18) ... else ...</code></td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Lo que cambia entre bloques parecidos se vuelve <strong>parámetro</strong>; lo que se repite queda adentro de la función. Además, una función <strong>no composable</strong> que solo calcula un texto.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong>Parámetro vs. argumento:</strong> <code>etiqueta</code> es el parámetro (el hueco); <code>"Nombre"</code> es el argumento (lo que se pasa).</li><li><strong>Una función común no dibuja:</strong> <code>descripcionEdad</code> devuelve un <code>String</code> y quien la llama decide mostrarlo con <code>Text</code>.</li><li><strong><code>if</code> como expresión:</strong> en Kotlin <code>if</code> devuelve un valor, por eso se puede escribir <code>return if (...) "a" else "b"</code>.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>@Composable
+fun DatoEstudiante(etiqueta: String, valor: String) {
+    Text("$etiqueta $valor")
+}
+
+fun descripcionEdad(edad: Int): String {
+    return if (edad &gt;= 18) "Edad: $edad anios (mayor de edad)"
+           else            "Edad: $edad anios (menor de edad)"
+}
+
+DatoEstudiante("Nombre", "Ana"); DatoEstudiante("Carrera", "Sistemas"); DatoEstudiante("Anio", "1")
+Text(descripcionEdad(20))</pre><div class="figs"><figure><img src="img/ej04.png" style="height:120px"><br>Tres usos del composable + la función común</figure></div>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ Un composable reutilizable con parámetros y una función Kotlin común que retorna un valor (con el desafío del <code>if</code>).</div>
+
+<h2 class="salto">Ejercicio 5 — Column, Row, Modifier y Material 3</h2>
+<p><strong>Consigna:</strong> Rediseñar la ficha con título, datos verticales, una fila con dos elementos, padding y un <code>Button</code>. Experimento: cambiar el orden de dos modificadores.<br>Rama: <code>ejercicio-05-modificadores</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Título y datos organizados verticalmente</td><td style="text-align:center">✅</td><td><code>Column</code></td></tr><tr><td>Al menos una fila con dos elementos</td><td style="text-align:center">✅</td><td><code>Row</code> con Carrera y Año</td></tr><tr><td>Espaciado exterior con padding</td><td style="text-align:center">✅</td><td><code>padding(innerPadding).padding(26.dp)</code></td></tr><tr><td>Un <code>Button</code> sin comportamiento relevante</td><td style="text-align:center">✅</td><td><code>Button({}) { Text("Guardar") }</code></td></tr><tr><td>Experimento obligatorio: cambiar el orden de dos modificadores</td><td style="text-align:center">✅</td><td>Dos @Preview con <code>background</code>/<code>padding</code> en distinto orden</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong><code>Column</code> apila, <code>Row</code> pone lado a lado y <code>Modifier</code> ajusta tamaño y márgenes. El experimento muestra que <strong>el orden de los modificadores cambia el resultado</strong>.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong>Modifier se lee de afuera hacia adentro</strong>, en el orden en que se escribe: cada eslabón envuelve al siguiente.</li><li><strong><code>background</code> y después <code>padding</code>:</strong> el color cubre todo y el texto queda separado del borde. Al revés, primero se reserva el margen (sin color) y el fondo pinta solo lo de adentro.</li><li><strong><code>Arrangement.spacedBy(16.dp)</code></strong> separa los hijos de un <code>Row</code>/<code>Column</code> sin poner padding a cada uno.</li><li><strong><code>dp</code></strong> es una unidad independiente de la densidad de la pantalla: se ve del mismo tamaño en distintos teléfonos.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>Column(modifier = Modifier.padding(innerPadding).padding(all = 26.dp)) {
+    Text("FICHA DEL ESTUDIANTE")
+    DatoEstudiante("Nombre:", "Ana")
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        DatoEstudiante("Carrera:", "Sistemas")
+        DatoEstudiante("Anio:", "1")
+    }
+    Button({}) { Text("Guardar") }       // todavía sin comportamiento
+}
+
+// Experimento (dos @Preview en la rama):
+Modifier.background(Color.Blue).padding(16.dp)   // fondo primero
+Modifier.padding(16.dp).background(Color.Blue)   // padding primero</pre><div class="figs"><figure><img src="img/ej05.png" style="height:130px"><br>La ficha: Column + Row + Button</figure><figure><img src="img/ej05_orden.png" style="height:200px"><br>Experimento: arriba fondo primero, abajo padding primero</figure></div><p>Para la captura del experimento se mostraron temporalmente los dos previews en la app (sin modificar la rama). Se ve que en el segundo caso el azul queda “pegado” al texto: el margen quedó afuera, sin color.</p>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿El orden de los Modifier puede afectar la interfaz?</strong><br>Sí. Cada modificador se aplica sobre el resultado del anterior, así que <code>background</code> antes o después de <code>padding</code> pinta áreas distintas (lo mismo pasa con <code>clickable</code> y <code>padding</code>: cambia la zona que responde al toque).</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ Usa <code>Column</code>, <code>Row</code>, más de tres modificadores (<code>padding</code>, <code>background</code>, <code>fillMaxSize</code>…) y un componente Material 3 además de <code>Text</code> (<code>Button</code>).</div>
+
+<h2 class="salto">Ejercicio 6 — Estado, botones y recomposición: contador</h2>
+<p><strong>Consigna:</strong> Contador con texto, +1, -1 y Reiniciar, que nunca baje de cero.<br>Rama: <code>ejercicio-06-contador</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Texto con el valor y botones +1, -1 y Reiniciar</td><td style="text-align:center">✅</td><td><code>Contador()</code></td></tr><tr><td>Estado con <code>remember</code> + <code>mutableStateOf</code></td><td style="text-align:center">✅</td><td><code>var contador by remember { ... }</code></td></tr><tr><td>Nunca menor que cero</td><td style="text-align:center">✅</td><td><code>if (contador &gt; 0) contador--</code> (probado)</td></tr><tr><td>Responder las 4 preguntas conceptuales</td><td style="text-align:center">✅</td><td>Más abajo</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Primer <strong>estado</strong>: <code>var contador by remember { mutableStateOf(0) }</code>. Cada botón cambia el estado, Compose detecta el cambio y redibuja el <code>Text</code>.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong>Evento → estado → recomposición:</strong> el clic ejecuta <code>contador++</code> (evento), cambia el valor observado (estado) y Compose vuelve a ejecutar <code>Contador()</code> (recomposición), que ahora muestra el número nuevo.</li><li><strong>Sin <code>remember</code></strong>, cada recomposición volvería a crear el estado en 0.</li><li><strong>Sin <code>mutableStateOf</code></strong>, cambiar la variable no avisaría a Compose y la pantalla no se actualizaría.</li><li><strong>No bajar de cero:</strong> se resuelve con un <code>if (contador &gt; 0)</code> antes de decrementar.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>@Composable
+fun Contador() {
+    var contador by remember { mutableStateOf(0) }
+    Text("Valor: $contador")
+    Button(onClick = { contador++ }) { Text("+1") }
+    Button(onClick = { if (contador &gt; 0) contador-- }) { Text("-1") }
+    Button(onClick = { contador = 0 }) { Text("Reiniciar") }
+}</pre><div class="figs"><figure><img src="img/ej06_dos.png" style="height:150px"><br>+1 tres veces y -1: Valor 2</figure><figure><img src="img/ej06_cero.png" style="height:150px"><br>Reiniciar y -1 dos veces: sigue en 0</figure></div>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Por qué un val contador = 0 no alcanza?</strong><br>Porque <code>val</code> no se puede cambiar y, aunque fuera <code>var</code> común, Compose no se enteraría del cambio ni redibujaría.</p>
+<p><strong>2. ¿Qué ocurre cuando cambia el estado?</strong><br>Compose marca para recomponer las funciones que lo leen y las vuelve a ejecutar con el valor nuevo.</p>
+<p><strong>3. ¿Qué parte de la interfaz depende de contador?</strong><br>El <code>Text("Valor: $contador")</code>; los botones no cambian.</p>
+<p><strong>4. ¿Diferencia entre cambiar una variable y una variable de estado observada?</strong><br>Una variable común cambia en memoria sin consecuencias visibles; una de estado avisa a Compose, que redibuja lo que la usa.</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ Los tres botones funcionan y el valor nunca baja de cero (probado en el emulador).</div>
+
+<h2 class="salto">Ejercicio 7 — TextField, if/when y null safety</h2>
+<p><strong>Consigna:</strong> “Clasificador de edad”: campos nombre y edad, botón Evaluar y resultado (error si no es número, inválido si es negativo, menor o mayor de edad). Desafío: usar <code>when</code>.<br>Rama: <code>ejercicio-07-textfield-nullsafety</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Campos nombre y edad, botón Evaluar y resultado</td><td style="text-align:center">🔧</td><td>Ahora el resultado usa el nombre</td></tr><tr><td><code>toIntOrNull()</code> y error si no es número</td><td style="text-align:center">🔧</td><td>Mensaje propio para texto no numérico</td></tr><tr><td>Negativo → no válido; &lt; 18 → menor; si no → mayor</td><td style="text-align:center">✅</td><td>Probado con -3, 15 y 25</td></tr><tr><td>Campo vacío sin cerrarse</td><td style="text-align:center">🔧</td><td>Mensaje propio para campo vacío</td></tr><tr><td>Desafío: reemplazar los if por <code>when</code></td><td style="text-align:center">✅</td><td><code>resultado = when { ... }</code></td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Se lee lo que escribe el usuario (siempre texto), se convierte con <code>toIntOrNull()</code> y se clasifica con un <code>when</code>. Ningún caso cierra la app.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong><code>OutlinedTextField</code> no guarda nada solo:</strong> muestra <code>value</code> y avisa cada tecla con <code>onValueChange</code>; el estado lo guarda quien lo usa.</li><li><strong><code>toIntOrNull()</code></strong> devuelve <code>Int?</code>: el número, o <code>null</code> si el texto no es un entero. <code>toInt()</code> en cambio cerraría la app con una excepción.</li><li><strong>El orden del <code>when</code> importa:</strong> primero se pregunta por <code>null</code>; después de esa rama Kotlin ya sabe que es un <code>Int</code> (smart cast) y deja comparar <code>&lt; 0</code>.</li><li><strong><code>when</code> sin argumento</strong> es como una cadena de <code>if / else if</code>, pero más legible y devuelve un valor.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>var edadTexto by remember { mutableStateOf("") }
+var resultado by remember { mutableStateOf("") }
+Button(onClick = {
+    val edadNumero = edadTexto.toIntOrNull()
+    val quien = nombre.trim().ifBlank { "La persona" }
+    resultado = when {
+        edadTexto.isBlank() -&gt; "Error: no se ingresó ninguna edad"
+        edadNumero == null  -&gt; "Error: "$edadTexto" no es un número"
+        edadNumero &lt; 0      -&gt; "Dato no valido"
+        edadNumero &lt; 18     -&gt; "$quien es menor de edad"
+        else                -&gt; "$quien es mayor de edad"
+    }
+}) { Text("Evaluar") }</pre><div class="figs"><figure><img src="img/ej07_mayor.png" style="height:150px"><br>Edad 25</figure><figure><img src="img/ej07_abc.png" style="height:150px"><br>Edad “abc”</figure></div><table><tr><th>Edad ingresada (probado)</th><th>Resultado</th></tr>
+<tr><td>25</td><td>Felipe es mayor de edad</td></tr><tr><td>15</td><td>Felipe es menor de edad</td></tr>
+<tr><td>-3</td><td>Dato no valido</td></tr><tr><td>abc</td><td>Error: "abc" no es un número</td></tr>
+<tr><td>(vacío)</td><td>Error: no se ingresó ninguna edad</td></tr></table>
+<div class="caja regla"><strong class="titulo">Corregido en la rama</strong><ul>
+<li>Antes “abc” y el campo vacío daban el mismo mensaje (“no se ingresó nada”). Ahora se pregunta primero <code>edadTexto.isBlank()</code> y cada error tiene su texto.</li>
+<li>El <code>Column</code> usaba <code>Modifier.padding(16.dp)</code> e ignoraba el <code>modifier</code> recibido, así que se perdía el <code>innerPadding</code> y el formulario quedaba debajo de la barra de estado. Ahora es <code>modifier.padding(16.dp)</code>.</li>
+<li>El resultado usa el nombre ingresado (o “La persona” si está vacío): antes el campo nombre no se usaba.</li></ul></div>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Qué devuelve toIntOrNull() y por qué su tipo tiene “?”?</strong><br>Devuelve <code>Int?</code>: el número si el texto es un entero válido, o <code>null</code> si no. El <code>?</code> indica que <code>null</code> es un valor posible y Kotlin obliga a manejarlo. Ejemplos: <code>"25"</code> → 25, <code>"abc"</code> → null, <code>""</code> → null.</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ Maneja edad válida, texto no numérico, negativo y vacío sin cerrarse (probado), con el desafío del <code>when</code>.</div>
+
+<h2 class="salto">Ejercicio 8 — Calculadora pequeña, Logcat y debugger</h2>
+<p><strong>Consigna:</strong> Calculadora de dos números (sumar, restar, multiplicar) con la lógica en una función separada. Parte B: breakpoint en la función. Parte C: log con etiqueta CALCULADORA.<br>Rama: <code>ejercicio-08-calculadora-debugger-logcat</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Sumar, restar y multiplicar</td><td style="text-align:center">✅</td><td>Probado con 7.5 y 2</td></tr><tr><td>Lógica en una función separada de la interfaz</td><td style="text-align:center">✅</td><td><code>calcular(a, b, operacion)</code></td></tr><tr><td>Parte B: breakpoint, Debug e inspección de a, b, operacion</td><td style="text-align:center">🧑‍💻</td><td>Pasos y valores esperados explicados</td></tr><tr><td>Parte C: log con etiqueta y filtro en Logcat</td><td style="text-align:center">✅</td><td><code>Log.d("CALCULADORA", ...)</code> (salida real abajo)</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>La cuenta vive en <code>calcular()</code>, una función <strong>pura</strong> (sin Compose); la pantalla solo valida y muestra. Cada operación deja un mensaje en Logcat.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong>Función pura:</strong> recibe datos y devuelve un resultado, sin tocar la pantalla. Se puede depurar o testear sola.</li><li><strong>Función local <code>ejecutar()</code></strong> dentro del composable: evita repetir la validación en los tres botones.</li><li><strong>Breakpoint:</strong> clic en el margen izquierdo de la línea <code>return when (operacion)</code>, ejecutar con <em>Debug</em> (ícono del bichito), tocar un botón; la app se pausa y en el panel <em>Variables</em> se ven <code>a</code>, <code>b</code> y <code>operacion</code>. <em>Resume</em> (F9) continúa.</li><li><strong>Logcat:</strong> filtrar con <code>tag:CALCULADORA</code> para ver solo esos mensajes.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>fun calcular(a: Double, b: Double, operacion: String): Double {
+    return when (operacion) {               // ← breakpoint acá
+        "sumar" -&gt; a + b
+        "restar" -&gt; a - b
+        "multiplicar" -&gt; a * b
+        else -&gt; 0.0
+    }
+}
+
+fun ejecutar(operacion: String) {                  // dentro de Calculadora()
+    val a = textoA.toDoubleOrNull(); val b = textoB.toDoubleOrNull()
+    if (a == null || b == null) { resultado = "Error: ingresá dos números válidos"; return }
+    val valorCalculado = calcular(a, b, operacion)
+    Log.d("CALCULADORA", "a=$a b=$b operacion=$operacion resultado=$valorCalculado")
+    resultado = valorCalculado.toString()
+}</pre><div class="figs"><figure><img src="img/ej08_mult.png" style="height:180px"><br>7.5 × 2 = 15.0</figure></div><pre>Logcat (tag:CALCULADORA), con A = 7.5 y B = 2:
+D CALCULADORA: a=7.5 b=2.0 operacion=sumar resultado=9.5
+D CALCULADORA: a=7.5 b=2.0 operacion=restar resultado=5.5
+D CALCULADORA: a=7.5 b=2.0 operacion=multiplicar resultado=15.0
+B = "x"  →  Resultado: Error: ingresá dos números válidos</pre><p>El breakpoint se demuestra en vivo con Android Studio (la guía pide mostrarlo y explicar los valores). Con 7.5 y 2 y “Multiplicar”, al pausar se ve <code>a = 7.5</code>, <code>b = 2.0</code> (el 2 se convirtió a Double) y <code>operacion = "multiplicar"</code>.</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ Resuelve las tres operaciones (probado) y deja log en Logcat. El breakpoint hay que mostrarlo en Android Studio.</div>
+
+<h2 class="salto">Ejercicio 9 — data class, List y LazyColumn</h2>
+<p><strong>Consigna:</strong> <code>data class Materia(nombre, anio, aprobada)</code>, lista de al menos cinco, mostrada en <code>LazyColumn</code> con un composable <code>MateriaItem</code>. Desafíos: <code>filter</code>, <code>size</code> y estilo según <code>aprobada</code>.<br>Rama: <code>ejercicio-09-dataclass-list-lazycolumn</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td><code>data class Materia</code></td><td style="text-align:center">✅</td><td>nombre, anio, aprobada</td></tr><tr><td>Lista de al menos cinco materias</td><td style="text-align:center">✅</td><td>Cinco</td></tr><tr><td><code>LazyColumn</code> con nombre, año y estado</td><td style="text-align:center">✅</td><td><code>items(...)</code></td></tr><tr><td>Composable <code>MateriaItem(materia)</code></td><td style="text-align:center">✅</td><td>Una fila por materia</td></tr><tr><td>Desafío 1: mostrar solo aprobadas con <code>filter</code></td><td style="text-align:center">🔧</td><td>Switch “Mostrar solo aprobadas”</td></tr><tr><td>Desafíos 2 y 3: <code>size</code> y estilo según aprobada</td><td style="text-align:center">✅</td><td>Totales y color verde/rojo</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Se separan los <strong>datos</strong> (<code>Materia</code> y la lista) de su <strong>representación</strong> (<code>MateriaItem</code>). <code>LazyColumn</code> recorre la lista y dibuja una fila por materia.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong><code>data class</code></strong> genera sola <code>toString</code>, <code>equals</code> y <code>copy</code>: es ideal para “cajas de datos”.</li><li><strong><code>LazyColumn</code> vs <code>Column</code>:</strong> la lazy solo dibuja las filas visibles; con listas largas no se traba.</li><li><strong><code>items(materias) { materia -&gt; ... }</code></strong> llama al bloque una vez por elemento.</li><li><strong><code>filter { it.aprobada }</code></strong> devuelve una lista nueva; la original no cambia. <code>it</code> es cada elemento.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>data class Materia(val nombre: String, val anio: Int, val aprobada: Boolean)
+
+val materias = listOf(Materia("Programacion I", 1, true), Materia("Matematica", 1, false), ...)  // 5
+
+val materiasAprobadas = materias.filter { it.aprobada }
+Text("Total de materias: ${materias.size}")
+Text("Materias aprobadas: ${materiasAprobadas.size}")
+var soloAprobadas by remember { mutableStateOf(false) }          // Switch
+val visibles = if (soloAprobadas) materiasAprobadas else materias
+LazyColumn { items(visibles) { materia -&gt; MateriaItem(materia = materia) } }
+
+@Composable
+fun MateriaItem(materia: Materia) {
+    val color = if (materia.aprobada) Color(0xFF2E7D32) else Color(0xFFC62828)
+    ...
+    Text(text = if (materia.aprobada) "Aprobada" else "Pendiente", color = color)
+}</pre><div class="figs"><figure><img src="img/ej09.png" style="height:300px"><br>Cinco materias: total 5, aprobadas 3, verde/rojo</figure><figure><img src="img/ej09_aprobadas.png" style="height:300px"><br>Switch activado: solo las 3 aprobadas</figure></div><div class="caja regla"><strong class="titulo">Corregido en la rama</strong>El desafío 1 pide <em>mostrar</em> solo las aprobadas: antes se calculaba la lista filtrada pero la <code>LazyColumn</code> mostraba todas. Se agregó un <code>Switch</code> que elige qué lista dibujar; la lista original nunca cambia.</div>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Qué parte es Kotlin y qué parte Compose?</strong><br><code>data class</code>, <code>listOf</code>, <code>filter</code> y <code>size</code> son Kotlin; <code>LazyColumn</code>, <code>items</code>, <code>MateriaItem</code> y <code>Text</code> son Compose.</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ Lista de cinco <code>Materia</code> con un composable independiente por fila (probado).</div>
+
+<h2 class="salto">Ejercicio 10 — Lista editable: tareas del estudiante</h2>
+<p><strong>Consigna:</strong> App de tareas: campo, Agregar, lista, eliminar, sin cadenas vacías. Desafíos: cantidad, “Borrar todas”, marcar completada.<br>Rama: <code>ejercicio-10-lista-editable-tareas</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Campo, botón Agregar, lista y eliminar</td><td style="text-align:center">✅</td><td><code>ListaTareas</code> + <code>TareaItem</code></td></tr><tr><td>No agregar cadenas vacías</td><td style="text-align:center">✅</td><td><code>isNotBlank()</code> (probado)</td></tr><tr><td>Estado mínimo pensado antes de programar</td><td style="text-align:center">✅</td><td>Texto escrito + colección (comentado en el código)</td></tr><tr><td>Desafíos: cantidad, Borrar todas, completada</td><td style="text-align:center">✅</td><td>Los tres</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>El estado mínimo son <strong>dos cosas</strong>: el texto que se escribe y la lista de tareas (<code>mutableStateListOf</code>). La fila (<code>TareaItem</code>) no toca la lista: recibe <strong>callbacks</strong>.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong><code>mutableStateListOf</code></strong> avisa a Compose al agregar o quitar elementos; una <code>mutableListOf</code> común no.</li><li><strong><code>isNotBlank()</code></strong> rechaza el texto vacío y el que tiene solo espacios.</li><li><strong>Callbacks (<code>onEliminar: () -&gt; Unit</code>):</strong> la fila avisa “me tocaron” y el padre decide qué hacer. Así la fila es reutilizable y el estado vive en un solo lugar (<em>state hoisting</em>).</li><li><strong><code>copy(completada = ...)</code>:</strong> <code>Tarea</code> es inmutable; para tildarla se reemplaza por una copia.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>data class Tarea(val texto: String, val completada: Boolean = false)
+
+var textoNuevo by remember { mutableStateOf("") }
+val tareas = remember { mutableStateListOf&lt;Tarea&gt;() }
+
+Button(onClick = { if (textoNuevo.isNotBlank()) { tareas.add(Tarea(textoNuevo)); textoNuevo = "" } }) { Text("Agregar") }
+Button(onClick = { tareas.clear() }) { Text("Borrar todas") }
+Text("Tareas: ${tareas.size}")
+LazyColumn {
+    itemsIndexed(tareas) { index, tarea -&gt;
+        TareaItem(tarea,
+            onToggleCompletada = { tareas[index] = tarea.copy(completada = !tarea.completada) },
+            onEliminar = { tareas.removeAt(index) })
+    }
+}</pre><div class="figs"><figure><img src="img/ej10.png" style="height:220px"><br>3 agregadas, 1 tachada, 1 eliminada: “Tareas: 2”</figure></div><p>Prueba: se agregaron tres tareas, “Agregar” con el campo vacío no agregó nada, se tildó “Leer apunte” (queda tachada) y se eliminó “Hacer TP”.</p>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Qué valores cambian (estado mínimo)?</strong><br>El texto escrito en el campo y la colección de tareas. La cantidad no es estado: se calcula con <code>tareas.size</code>.</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ Se agregan al menos tres tareas y se eliminan sin reiniciar la app (probado), con los tres desafíos.</div>
+
+<h2 class="salto parte">Anexo A · Organización del repositorio</h2>
+<p>Un solo proyecto Android (<code>com.example.ejercicioskotlin</code>) y <strong>una rama por ejercicio</strong>; cada rama tiene
+solo el código de su ejercicio en <code>MainActivity.kt</code> (la guía permite trabajar así: “reutilizar un mismo proyecto y crear una pantalla
+o archivo Kotlin nuevo para cada actividad”).</p>
+<table><tr><th>Rama</th><th>Ejercicio</th></tr><tr><td><code>ejercicio-01-explorar-ide</code></td><td>1 — Primer proyecto, emulador y recorrido del entorno</td></tr><tr><td><code>ejercicio-02-presentacion</code></td><td>2 — Primeros pasos con funciones @Composable</td></tr><tr><td><code>ejercicio-03-tipos-de-datos</code></td><td>3 — Kotlin: val, var, tipos y plantillas de String</td></tr><tr><td><code>ejercicio-04-funciones-con-parametros</code></td><td>4 — Funciones, parámetros y componentes reutilizables</td></tr><tr><td><code>ejercicio-05-modificadores</code></td><td>5 — Column, Row, Modifier y Material 3</td></tr><tr><td><code>ejercicio-06-contador</code></td><td>6 — Estado, botones y recomposición: contador</td></tr><tr><td><code>ejercicio-07-textfield-nullsafety</code></td><td>7 — TextField, if/when y null safety</td></tr><tr><td><code>ejercicio-08-calculadora-debugger-logcat</code></td><td>8 — Calculadora pequeña, Logcat y debugger</td></tr><tr><td><code>ejercicio-09-dataclass-list-lazycolumn</code></td><td>9 — data class, List y LazyColumn</td></tr><tr><td><code>ejercicio-10-lista-editable-tareas</code></td><td>10 — Lista editable: tareas del estudiante</td></tr><tr><td><code>ejercicio-11-recursos-configuracion-visual</code></td><td>11 — Recursos Android y configuración visual</td></tr><tr><td><code>ejercicio-12-context-intents</code></td><td>12 — Primer contacto con el Android SDK: Context e Intents</td></tr><tr><td><code>ejercicio-13-organizador-cursada</code></td><td>13 — Miniaplicación integradora: organizador de cursada</td></tr></table>
+<pre>app/src/main/
+ ├── AndroidManifest.xml
+ ├── java/com/example/ejercicioskotlin/
+ │    ├── MainActivity.kt        # el ejercicio de la rama
+ │    └── ui/theme/              # Color.kt, Theme.kt, Type.kt
+ └── res/values/strings.xml      # (+ values-en/ en los Ej 11 y 13)</pre>
+<h2 class="anexo">Anexo B · Cómo ejecutar y probar</h2>
+<pre>git clone https://github.com/feliforte14/EJERCICIOS-GUIA.git
+cd EJERCICIOS-GUIA
+git switch ejercicio-13-organizador-cursada      # o la rama del ejercicio</pre>
+<ol><li>Abrir en Android Studio y esperar el <em>Gradle sync</em>.</li>
+<li><strong>Run ▶</strong> en un AVD (Device Manager). Para depurar: <strong>Debug</strong> (bichito) con un breakpoint.</li>
+<li><strong>Logcat</strong>: filtrar por etiqueta (<code>tag:CALCULADORA</code>, <code>tag:ORGANIZADOR</code>).</li>
+<li><strong>Previews</strong>: abrir el archivo y la vista <em>Split</em> o <em>Design</em>.</li>
+<li>Para ver el modo oscuro o el inglés en el emulador: Ajustes → Pantalla → Tema oscuro; Ajustes → Sistema → Idiomas.</li></ol>
+<h2 class="anexo">Anexo C · Preguntas transversales</h2>
+
+<table>
+<tr><th style="width:40%">Pregunta</th><th>Respuesta</th></tr>
+<tr><td>1–3. ¿Qué es Kotlin puro, qué es Compose y qué depende del Android SDK?</td><td>Ver la tabla del glosario. Ejemplos del proyecto: <code>calcular()</code>, <code>descripcionEdad()</code>, <code>data class</code> (Kotlin); composables (Compose); <code>Intent</code>, <code>Context</code>, <code>Log</code>, <code>R.string</code> (SDK).</td></tr>
+<tr><td>4. ¿Qué datos son constantes y cuáles estado?</td><td>Constantes: la lista de materias del Ej 9, los datos de la ficha. Estado: contador, campos de texto, lista de tareas/actividades, filtro.</td></tr>
+<tr><td>5. ¿Qué evento cambia cada estado?</td><td><code>onClick</code> de los botones, <code>onValueChange</code> de los campos, <code>onCheckedChange</code> del Checkbox, <code>onClick</code> de los chips.</td></tr>
+<tr><td>6. ¿Qué parte de la UI se recompone?</td><td>Las funciones que <strong>leen</strong> el estado que cambió (por ejemplo, solo el <code>Text</code> del contador).</td></tr>
+<tr><td>7. ¿Qué función podría extraerse?</td><td>Lo que se repite con pequeñas diferencias: <code>DatoEstudiante</code> (Ej 4), <code>ejecutar()</code> (Ej 8), <code>ActividadItem</code> (Ej 13).</td></tr>
+<tr><td>8. ¿El error es de sintaxis, tipos, compilación o ejecución?</td><td>Sintaxis/tipos/compilación: los marca el editor y la ventana Build (Ej 2). Ejecución: aparecen al correr, en Logcat (por ejemplo, <code>toInt()</code> con texto, o un Intent sin app que lo atienda).</td></tr>
+<tr><td>9–10. ¿Breakpoint o Logcat?</td><td>Breakpoint para mirar valores en un momento puntual (Ej 8); Logcat para seguir lo que pasa sin frenar la app (Ej 8 y 13).</td></tr>
+<tr><td>11. ¿Emulador o alcanza con Preview?</td><td>Preview para el aspecto (Ej 5, 11, 13). Emulador para comportamiento: clics, estado, Intents (Ej 6–13).</td></tr>
+<tr><td>12. ¿La IA propuso conceptos que todavía no puedo explicar?</td><td>Si es así, primero hay que entenderlos (pedirle que lo explique o que haga preguntas) y recién después usarlos.</td></tr>
+</table>
+
+
+<h2 class="anexo">Anexo D · Registro de uso de IA (pueden pedirlo en parciales y finales)</h2>
+
+<p>Plantilla para completar con las consultas propias, una fila por consulta:</p>
+<table>
+<tr><th>Problema</th><th>Prompt</th><th>Respuesta útil</th><th>Decisión propia</th><th>Verificación</th></tr>
+<tr><td>¿Qué quería resolver?</td><td>¿Qué se le pidió a la IA?</td><td>¿Qué concepto o pista aportó?</td><td>¿Qué se modificó realmente?</td><td>¿Cómo se comprobó que funcionaba?</td></tr>
+<tr><td>Ejemplo: no entendía por qué el contador no se actualizaba con <code>var</code>.</td><td>“Explicame paso a paso qué sucede desde que presiono un Button hasta que el Text muestra el nuevo valor.”</td><td>Diferencia entre variable común y estado observado (<code>mutableStateOf</code> + <code>remember</code>).</td><td>Cambié la variable a <code>var contador by remember { mutableStateOf(0) }</code>.</td><td>En el emulador, +1/−1/Reiniciar actualizan el valor y nunca baja de 0.</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<div class="caja ojo"><strong class="titulo">Prompts que conviene evitar (sección 18)</strong>“Haceme el ejercicio 10”, “Dame el código final”, “Corregí todo mi proyecto”.
+Mejor: “Mi botón no agrega elementos. Ayudame a identificar qué estado debería cambiar”, o “Revisá esta función y haceme preguntas para comprobar si entiendo lo que hace”.</div>
+
+
+<h2 class="anexo">Anexo E · Revisión del código contra la guía</h2>
+
+<p>Se revisó cada rama contra la consigna. Lo que no se cumplía se corrigió y se subió a GitHub (commits nuevos en cada rama, probados en el emulador):</p>
+<table><tr><th>Ejercicio</th><th>Qué se corrigió</th></tr>
+<tr><td>1</td><td>El texto decía “Hello Felipe!”; ahora “Hola Android – Felipe”.</td></tr>
+<tr><td>3</td><td>Se agregó la Parte B (tipos explícitos) y la frase que combina texto y expresión.</td></tr>
+<tr><td>7</td><td>Mensajes distintos para campo vacío y texto no numérico; se usa el <code>modifier</code> recibido (respeta el <code>innerPadding</code>); el resultado nombra a la persona.</td></tr>
+<tr><td>9</td><td>Desafío 1: un Switch muestra solo las aprobadas.</td></tr></table>
+<div class="caja ojo"><strong class="titulo">Lo que hay que mostrar en vivo (no queda en el código)</strong>
+Recorrer el proyecto y el Device Manager (Ej 1), los errores provocados a propósito (Ej 2), el breakpoint con Debug (Ej 8 y 13) y la
+explicación oral del Ej 13. Para cada uno, el apunte indica qué hacer y qué se debería ver.</div>
+
+<h2 class="salto parte">Glosario</h2>
+<table>
+  <tr><th style="width:24%">Término</th><th>Qué significa, en simple</th></tr>
+  <tr><td><strong>Android Studio</strong></td><td>El programa (IDE) donde se escribe, compila, ejecuta y depura la app.</td></tr>
+  <tr><td><strong>Gradle</strong></td><td>La herramienta que compila el proyecto y baja las bibliotecas. Su configuración está en <code>build.gradle.kts</code>.</td></tr>
+  <tr><td><strong>AVD / emulador</strong></td><td>AVD = la <em>configuración</em> de un teléfono virtual (modelo, versión de Android). El emulador es el <em>programa</em> que lo ejecuta.</td></tr>
+  <tr><td><strong>Activity</strong></td><td>Una pantalla de Android con su ciclo de vida. <code>MainActivity</code> es la que se abre al tocar el ícono.</td></tr>
+  <tr><td><strong>AndroidManifest.xml</strong></td><td>La “ficha” de la app para el sistema: nombre, ícono, Activities y cuál es la de inicio (MAIN/LAUNCHER).</td></tr>
+  <tr><td><strong>Kotlin</strong></td><td>El lenguaje. <code>val</code>, <code>var</code>, <code>fun</code>, <code>if</code>, <code>when</code>, <code>data class</code>, <code>List</code> son Kotlin puro.</td></tr>
+  <tr><td><strong>Jetpack Compose</strong></td><td>La biblioteca para dibujar la interfaz con funciones Kotlin (<code>@Composable</code>, <code>Text</code>, <code>Button</code>, <code>Column</code>…).</td></tr>
+  <tr><td><strong>Android SDK</strong></td><td>Las APIs del sistema operativo: <code>Context</code>, <code>Intent</code>, <code>Uri</code>, <code>Log</code>, recursos (<code>R.string</code>).</td></tr>
+  <tr><td><strong>@Composable</strong></td><td>Marca una función que describe una parte de la pantalla. Solo se puede llamar desde otra función @Composable.</td></tr>
+  <tr><td><strong>@Preview</strong></td><td>Hace que Android Studio dibuje un composable en el editor sin abrir el emulador.</td></tr>
+  <tr><td><strong>Modifier</strong></td><td>Cadena de ajustes de un componente: tamaño, márgenes, fondo, clics. <strong>El orden importa</strong>.</td></tr>
+  <tr><td><strong>Estado</strong></td><td>Un valor que, al cambiar, debe cambiar la pantalla (<code>mutableStateOf</code>). Compose lo “observa”.</td></tr>
+  <tr><td><strong>Recomposición</strong></td><td>Compose vuelve a ejecutar las funciones que leen un estado que cambió, para redibujar.</td></tr>
+  <tr><td><strong>remember</strong></td><td>Guarda un valor entre recomposiciones (si no, cada recomposición lo crearía de nuevo).</td></tr>
+  <tr><td><strong>null / tipo nullable</strong></td><td><code>Int?</code> puede ser un número o <code>null</code> (“no hay valor”). Kotlin obliga a manejar ese caso.</td></tr>
+  <tr><td><strong>Logcat / breakpoint</strong></td><td>Logcat: consola de mensajes de la app (<code>Log.d</code>). Breakpoint: punto donde el Debugger pausa para mirar variables.</td></tr>
+  <tr><td><strong>Recurso</strong></td><td>Archivo fuera del código (textos en <code>res/values/strings.xml</code>, colores, imágenes) que Android elige según idioma, tema, etc.</td></tr>
+  <tr><td><strong>Intent</strong></td><td>Mensaje que pide al sistema una acción: abrir otra pantalla, compartir, abrir un link.</td></tr>
+</table>
+</body>
+</html>
