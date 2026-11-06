@@ -44,7 +44,10 @@ fun ClasificadorEdad(modifier: Modifier = Modifier) {
     var edadTexto by remember { mutableStateOf("") }
     var resultado by remember { mutableStateOf("") }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    // Se usa el "modifier" recibido (trae el innerPadding del Scaffold) y se le suma el padding propio.
+    // Con Modifier.padding(...) a secas se perdía el innerPadding y el formulario quedaba debajo de
+    // la barra de estado.
+    Column(modifier = modifier.padding(16.dp)) {
         // value muestra el estado actual; onValueChange lo actualiza en cada tecla.
         // Patrón unidireccional: usuario tipea -> evento -> cambia estado -> recompone.
         OutlinedTextField(
@@ -61,13 +64,18 @@ fun ClasificadorEdad(modifier: Modifier = Modifier) {
             // toIntOrNull(): null safety. Si el texto no es un Int válido, devuelve
             // null en vez de crashear (a diferencia de toInt()).
             val edadNumero = edadTexto.toIntOrNull()
+            // Si no escribió nombre, se usa un genérico (ifBlank devuelve el texto o el reemplazo).
+            val quien = nombre.trim().ifBlank { "La persona" }
             // when como expresión: el chequeo de null va primero porque edadNumero
             // es Int? (nullable) — Kotlin no deja comparar "null < 18" directo.
             resultado = when {
-                edadNumero == null -> "Error: no se ingreso nada"
+                // Campo vacío y texto no numérico dan null, pero son errores distintos:
+                // se distinguen preguntando antes si el campo está en blanco.
+                edadTexto.isBlank() -> "Error: no se ingresó ninguna edad"
+                edadNumero == null -> "Error: \"$edadTexto\" no es un número"
                 edadNumero < 0 -> "Dato no valido"
-                edadNumero < 18 -> "Menor de edad"
-                else -> "Mayor de edad"
+                edadNumero < 18 -> "$quien es menor de edad"
+                else -> "$quien es mayor de edad"
             }
         }) {
             Text("Evaluar")
