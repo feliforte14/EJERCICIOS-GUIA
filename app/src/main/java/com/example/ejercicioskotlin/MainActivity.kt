@@ -14,6 +14,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Switch
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,6 +59,10 @@ val materias = listOf(
 fun ListaMaterias(modifier: Modifier = Modifier) {
     // Desafío 1: solo las aprobadas, con filter.
     val materiasAprobadas = materias.filter { it.aprobada }
+    // Estado de la pantalla: si el switch está activado se muestran SOLO las aprobadas.
+    var soloAprobadas by remember { mutableStateOf(false) }
+    // La lista que se dibuja depende del estado: la lista original (materias) no cambia nunca.
+    val visibles = if (soloAprobadas) materiasAprobadas else materias
 
     Column(
         modifier = modifier
@@ -61,12 +72,16 @@ fun ListaMaterias(modifier: Modifier = Modifier) {
         // Desafío 2: cantidad total con materias.size.
         Text("Total de materias: ${materias.size}")
         Text("Materias aprobadas: ${materiasAprobadas.size}")
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Mostrar solo aprobadas ")
+            Switch(checked = soloAprobadas, onCheckedChange = { soloAprobadas = it })
+        }
 
         // LazyColumn: a diferencia de Column, solo dibuja las filas visibles en
         // pantalla (no todas de una) — clave para listas largas. items() recorre
         // la List y llama a MateriaItem por cada elemento.
         LazyColumn {
-            items(materias) { materia ->
+            items(visibles) { materia ->
                 MateriaItem(materia = materia)
             }
         }
