@@ -38,6 +38,11 @@ fun FichaDeEstudiante(modifier: Modifier = Modifier) {
     val cursaProgramacion = true
     // Variable calculada a partir de otra: no es un dato nuevo, es una expresión.
     val anioProximo = edad + 1
+
+    // Parte B: mismas reglas, pero con el tipo escrito a mano.
+    val materias: Int = 5
+    val ciudad: String = "Cordoba"
+    // "20" (String) y 20 (Int) no son lo mismo: "20" + 1 da "201" (une textos), 20 + 1 da 21.
     Column(modifier = modifier) {
         // "$variable": plantilla de String, interpola el valor directo adentro del texto.
         Text("Nombre del estudiante: $nombre")
@@ -45,6 +50,14 @@ fun FichaDeEstudiante(modifier: Modifier = Modifier) {
         Text("Promedio del estudiante: $promedio")
         Text("Cursa programacion?: $cursaProgramacion")
         Text("edad proxima?: $anioProximo")
+        // Frase que combina texto y una expresión: con ${ } se puede calcular adentro del String.
+        Text("El año que viene $nombre va a tener ${edad + 1} años")
+
+        // ── Parte B: tipo EXPLÍCITO (": Int", ": String") ──
+        // Es lo mismo que escribir val materias = 5: Kotlin ya lo infería. Escribir el tipo sirve
+        // para documentar o cuando todavía no hay un valor del que deducirlo.
+        Text("Materias que curso: $materias")
+        Text("Ciudad: $ciudad")
     }
 }
 
