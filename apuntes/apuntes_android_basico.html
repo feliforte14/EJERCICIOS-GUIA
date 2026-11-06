@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Apuntes Android Básico – DA1</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  :root { --azul:#1d3a8a; --azul-claro:#eef2fb; --verde:#1f6b3a; --verde-claro:#eef7f0;
+          --ambar:#7a5a00; --ambar-claro:#fff8e1; --gris:#555; --borde:#cfd6e4; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt;
+         line-height: 1.45; color: #1a1a1a; background:#fff; margin:0; }
+  header.portada { border-bottom: 3px solid var(--azul); padding-bottom: 10px; margin-bottom: 18px; }
+  header.portada h1 { margin:0; font-size: 20pt; color: var(--azul); }
+  header.portada p { margin: 4px 0 0; color: var(--gris); }
+  h2 { font-size: 15pt; color: var(--azul); margin: 22px 0 6px; border-bottom: 1px solid var(--borde); padding-bottom: 4px; }
+  h3 { font-size: 11.5pt; margin: 16px 0 6px; }
+  p { margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.8pt; page-break-inside: avoid; }
+  th, td { border: 1px solid var(--borde); padding: 5px 7px; vertical-align: top; text-align: left; }
+  th { background: var(--azul-claro); }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 9pt; background: #f2f4f8; padding: 0 3px; border-radius: 3px; }
+  pre { font-family: "SF Mono", Menlo, monospace; font-size: 8.4pt; background: #f6f7fa; border: 1px solid var(--borde);
+        border-radius: 6px; padding: 9px 11px; overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere; page-break-inside: avoid; margin: 8px 0; }
+  .caja { border-radius: 6px; padding: 8px 12px; margin: 10px 0; page-break-inside: avoid; }
+  .clave { background: var(--azul-claro); border-left: 4px solid var(--azul); }
+  .regla { background: var(--verde-claro); border-left: 4px solid var(--verde); }
+  .ojo { background: var(--ambar-claro); border-left: 4px solid var(--ambar); }
+  .caja strong.titulo { display:block; margin-bottom: 3px; }
+  .tag { display:inline-block; padding: 0 6px; border-radius: 10px; font-size: 8.8pt; font-weight: 600; }
+  .v { background:#e3ecff; color:#1d3a8a; } .vm { background:#e5f5ea; color:#1f6b3a; } .r { background:#fff0d6; color:#7a5a00; }
+  ul, ol { margin: 4px 0 8px; padding-left: 20px; }
+  li { margin: 2px 0; }
+  .salto { page-break-before: always; }
+  .figs { display:flex; gap:10px; align-items:flex-end; justify-content:center; margin:10px 0; break-inside: avoid; }
+  .figs figure { margin:0; flex:0 0 auto; text-align:center; font-size:8.6pt; color:var(--gris); }
+  .figs img { border:1px solid var(--borde); border-radius:6px; display:block; margin:0 auto 4px; }
+  
+  .pocas { background:#f3f0ff; border-left:4px solid #5b3fb8; }
+  .novato { background:#fff4ec; border-left:4px solid #c2561a; }
+  .novato ul { margin-bottom:0; }
+  .novato li { margin:4px 0; }
+  .teoria { background:#eef7fb; border-left:4px solid #1b6f8f; }
+  h2.parte { font-size: 18pt; color:#fff; background: var(--azul); border:0; padding: 10px 14px; border-radius: 6px; }
+  h2.anexo { margin-top: 30px; }
+  .indice { border:1px solid var(--borde); border-radius:6px; padding: 8px 14px; margin: 14px 0; }
+  .indice h3 { margin: 4px 0 6px; } .indice ol { margin:0; } .indice ul { margin: 2px 0 4px; padding-left: 18px; font-size: 9.6pt; }
+  .temas { background:#f3f0ff; border-left:4px solid #5b3fb8; }
+  .bloque { break-inside: avoid; page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+</style>
+</head>
+<body>
+<header class="portada">
+  <h1>Apuntes – Android Studio, Kotlin y Jetpack Compose</h1>
+  <p>Desarrollo de Aplicaciones I · UADE · Trabajo Práctico “Práctica Incremental” (Guía de Ejercicios 00, v1.2)</p>
+  <p>Repositorio: <code>EJERCICIOS-GUIA</code> · una rama por ejercicio (<code>ejercicio-01-…</code> a <code>ejercicio-13-…</code>) · Felipe Forte</p>
+</header>
+<p><strong>Cómo leer estos apuntes.</strong> La <strong>Parte 1</strong> explica la teoría que hace falta para la guía y resume los temas más
+importantes. La <strong>Parte 2</strong> recorre los ejercicios uno por uno: qué pide la guía, “En pocas palabras”, <strong>“Importante a
+considerar”</strong>, el código real de la rama, las pruebas en el emulador, las preguntas de la guía y el criterio de finalización. Al final
+hay <strong>anexos</strong> (organización, cómo probar, preguntas transversales, registro de IA, revisión del código) y el <strong>glosario</strong>.</p>
+<p>En la tabla “Lo que pide la guía”: ✅ cumplido y probado en el emulador · 🔧 corregido en la revisión · 🧑‍💻 se demuestra en vivo en Android Studio.</p>
+<div class="indice"><h3>Contenido</h3><ol><li><strong>Parte 1 · Introducción teórica</strong></li><li><strong>Parte 2 · Ejercicios</strong><ul><li>Ejercicio 1 — Primer proyecto, emulador y recorrido del entorno</li><li>Ejercicio 2 — Primeros pasos con funciones @Composable</li></ul></li><li><strong>Anexos</strong><ul><li>Anexo A · Organización del repositorio</li><li>Anexo B · Cómo ejecutar y probar</li><li>Anexo C · Preguntas transversales</li><li>Anexo D · Registro de uso de IA (pueden pedirlo en parciales y finales)</li><li>Anexo E · Revisión del código contra la guía</li></ul></li><li><strong>Glosario</strong></li></ol></div><div class="caja ojo"><strong class="titulo">Versión de esta rama</strong>Este PDF llega hasta el <strong>Ejercicio 2</strong>. La versión completa está en la rama <code>ejercicio-13-organizador-cursada</code>.</div>
+
+<h2 class="salto parte">Parte 1 · Introducción teórica</h2>
+
+<p>Fuentes: <em>Resumen Teoría Android — DA1</em>, <em>Apuntes de Clase: Jetpack Compose</em>, <em>Ciclo de vida Android</em> y la introducción
+de la guía. La guía no presupone conocimiento previo de Kotlin: el objetivo es <strong>leer código, navegar Android Studio, reconocer el SDK de
+Android, usar el emulador y entender el modelo declarativo de Compose</strong>.</p>
+
+<h3>1. Android y el entorno de desarrollo</h3>
+<p>Android es un sistema operativo móvil en capas: <strong>kernel Linux</strong> (memoria, procesos, drivers) → <strong>HAL</strong> (un módulo por
+hardware) → <strong>librerías</strong> → <strong>Application Framework</strong> (Activity Manager, Window Manager…) → <strong>aplicaciones</strong>. Como
+desarrolladores trabajamos arriba de todo, con el <strong>Android SDK</strong>. Cada app corre aislada (<em>sandbox</em>) y necesita permisos
+para recursos sensibles.</p>
+<table><tr><th>Pieza</th><th>Qué es</th></tr>
+<tr><td>Android Studio</td><td>IDE para escribir, compilar, ejecutar y depurar (Build, Run, Logcat, Debugger, Device Manager).</td></tr>
+<tr><td>Gradle</td><td>Compila el proyecto y baja bibliotecas. Se configura en <code>build.gradle.kts</code>.</td></tr>
+<tr><td>AVD / emulador</td><td>El AVD es la configuración de un teléfono virtual; el emulador es el programa que lo ejecuta.</td></tr>
+<tr><td>Manifest</td><td><code>AndroidManifest.xml</code>: nombre, ícono, permisos y Activity de inicio (MAIN + LAUNCHER).</td></tr>
+<tr><td>Compilación</td><td><code>.kt</code> → <code>.class</code> → <code>.dex</code> (D8/R8) → APK firmado → el runtime ART lo ejecuta (JIT + AOT).</td></tr></table>
+
+<h3>2. Activity y ciclo de vida</h3>
+<p>En Android la app <strong>no es dueña de su proceso</strong>: el sistema puede pausarla, detenerla o matarla para liberar memoria. Por eso
+la <code>Activity</code> pasa por estados con callbacks en pares simétricos:</p>
+<pre>onCreate()  ↔ onDestroy()   existencia      (en onCreate va setContent { ... })
+onStart()   ↔ onStop()      visibilidad
+onResume()  ↔ onPause()     foco / interacción</pre>
+<p>Al <strong>rotar</strong>, la Activity se destruye y se vuelve a crear: lo que estaba solo en memoria de la pantalla se pierde (esto vuelve en
+las guías de persistencia y MVVM).</p>
+
+<h3>3. Kotlin, lo mínimo para empezar</h3>
+<ul>
+<li><code>val</code> (no se reasigna) y <code>var</code> (se puede reasignar). El tipo se <strong>infiere</strong>: <code>val edad = 20</code> es <code>Int</code>.</li>
+<li>Tipos básicos: <code>String</code>, <code>Int</code>, <code>Double</code>, <code>Boolean</code>. Plantillas: <code>"Edad: $edad"</code>, <code>"${edad + 1}"</code>.</li>
+<li>Funciones con parámetros y retorno: <code>fun descripcionEdad(edad: Int): String</code>. <code>if</code> y <code>when</code> devuelven valores.</li>
+<li><strong>Null safety</strong>: <code>Int?</code> puede valer <code>null</code>; <code>"abc".toIntOrNull()</code> devuelve <code>null</code> en vez de romper.</li>
+<li><code>data class</code> para datos (genera <code>equals</code>, <code>toString</code>, <code>copy</code>); <code>List</code>, <code>filter</code>, <code>size</code> para colecciones.</li>
+</ul>
+
+<h3>4. Jetpack Compose: UI = f(estado)</h3>
+<p>Compose construye la interfaz con funciones Kotlin marcadas con <code>@Composable</code>. En lugar de buscar una vista y modificarla
+(enfoque imperativo con XML), se describe <strong>qué</strong> debe mostrarse según el estado actual (enfoque declarativo).</p>
+<pre>class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent { MaterialTheme { PantallaPrincipal() } }    // Activity → setContent → composables
+    }
+}</pre>
+<ul>
+<li><strong>Layouts</strong>: <code>Column</code> (vertical), <code>Row</code> (horizontal), <code>Box</code> (superpone), <code>LazyColumn</code> (listas largas).</li>
+<li><strong>Modifier</strong>: tamaño, márgenes, fondo, clics. Se encadena y <strong>el orden importa</strong>. Un composable reutilizable recibe <code>modifier: Modifier = Modifier</code>.</li>
+<li><strong>Estado</strong>: <code>var x by remember { mutableStateOf(...) }</code>. Al cambiar, Compose <strong>recompone</strong> lo que lo lee.</li>
+<li><strong>State hoisting</strong>: el padre guarda el estado y el hijo recibe el valor y un callback (<code>onValueChange</code>, <code>onClick</code>).</li>
+<li><strong>Material 3</strong>: componentes (<code>Button</code>, <code>Card</code>, <code>Checkbox</code>, <code>Switch</code>…) y tema (colores, tipografía, modo oscuro).</li>
+<li><strong>@Preview</strong>: dibuja un composable en el editor sin emulador; sirve para ver varias configuraciones a la vez.</li>
+</ul>
+<pre>Evento (onClick) → cambia el estado → Compose recompone → la pantalla muestra el valor nuevo</pre>
+
+<h3>5. Recursos y Android SDK</h3>
+<ul>
+<li><strong>Recursos</strong>: los textos fijos van en <code>res/values/strings.xml</code> y se leen con <code>stringResource(R.string.x)</code>. Android elige
+la variante según idioma o tema (<code>values-en/</code>, modo oscuro) sin tocar el código.</li>
+<li><strong>Context</strong>: el puente con el sistema. En Compose: <code>LocalContext.current</code>.</li>
+<li><strong>Intent</strong>: pedido al sistema (“compartí este texto”, “abrí este link”). Implícito: el sistema elige qué app lo atiende.</li>
+<li><strong>Logcat y Debugger</strong>: <code>Log.d("ETIQUETA", ...)</code> para seguir la ejecución; breakpoints para pausar y mirar variables.</li>
+</ul>
+
+<h3>¿Kotlin, Compose o Android SDK? (pregunta de toda la guía)</h3>
+<table><tr><th>Kotlin</th><th>Jetpack Compose</th><th>Android SDK</th></tr>
+<tr><td><code>val</code>, <code>var</code>, <code>fun</code>, <code>if</code>, <code>when</code>, <code>data class</code>, <code>List</code>, <code>filter</code>, <code>toIntOrNull()</code>, <code>apply</code></td>
+<td><code>@Composable</code>, <code>@Preview</code>, <code>Text</code>, <code>Button</code>, <code>Column</code>, <code>Row</code>, <code>Modifier</code>, <code>remember</code>, <code>mutableStateOf</code>, <code>LazyColumn</code>, <code>stringResource</code>, <code>LocalContext</code></td>
+<td><code>Activity</code>, <code>Context</code>, <code>Intent</code>, <code>Uri</code>, <code>Log</code>, <code>R.string</code>, <code>AndroidManifest.xml</code></td></tr></table>
+<div class="caja temas"><strong class="titulo">Temas más importantes a considerar</strong><ol>
+<li><strong>UI = f(estado)</strong>: la pantalla es consecuencia del estado; para cambiar lo que se ve, se cambia el estado.</li>
+<li><strong>Evento → estado → recomposición</strong>: sin <code>mutableStateOf</code> Compose no se entera; sin <code>remember</code> el valor se reinicia.</li>
+<li><strong>Separar datos, lógica y UI</strong>: <code>data class</code> y funciones puras (calcular, validar) fuera de los composables.</li>
+<li><strong>Null safety</strong>: todo lo que viene del usuario es texto y puede no ser válido (<code>toIntOrNull</code>, <code>isBlank</code>).</li>
+<li><strong>Modifier y layouts</strong>: Column/Row/LazyColumn y el orden de los modificadores.</li>
+<li><strong>Recursos</strong> para textos fijos y <strong>Previews</strong> para probar configuraciones.</li>
+<li><strong>Context e Intents</strong>: la puerta al Android SDK.</li>
+<li><strong>Diagnosticar</strong> con Logcat y breakpoints antes de cambiar código al azar.</li>
+<li><strong>La IA como tutor</strong>: poder explicar cada línea; en parciales y finales pueden pedir el registro de uso de IA.</li>
+</ol></div>
+<div class="caja clave"><strong class="titulo">La estrategia de trabajo de la guía</strong>Leer, modificar poco, ejecutar, observar, depurar, explicar y recién después ampliar la solución.</div>
+
+<h2 class="salto parte">Parte 2 · Ejercicios</h2>
+<p>Cada ejercicio vive en su propia rama del repositorio y contiene solo el código de ese ejercicio (en <code>MainActivity.kt</code>). Las pruebas se hicieron en un emulador Pixel 8.</p>
+<h2 class="salto">Ejercicio 1 — Primer proyecto, emulador y recorrido del entorno</h2>
+<p><strong>Consigna:</strong> Recorrer el panel Project, ubicar <code>MainActivity.kt</code>, <code>AndroidManifest.xml</code> y el Gradle del módulo <code>app</code>, crear un AVD, ejecutar y ubicar dónde se ve la compilación. Después cambiar el texto a <em>Hola Android – &lt;nombre&gt;</em>.<br>Rama: <code>ejercicio-01-explorar-ide</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Recorrer la vista Android y ubicar MainActivity.kt, AndroidManifest.xml y el Gradle del módulo</td><td style="text-align:center">🧑‍💻</td><td>Tabla de ubicaciones en este ejercicio</td></tr><tr><td>Abrir Device Manager y crear un AVD</td><td style="text-align:center">🧑‍💻</td><td>Pixel 8 virtual</td></tr><tr><td>Ejecutar la app e identificar dónde aparece la compilación</td><td style="text-align:center">✅</td><td>Ventana <em>Build</em>; la app corre en el AVD</td></tr><tr><td>Mostrar “Hola Android – &lt;nombre&gt;”</td><td style="text-align:center">🔧</td><td><code>Text("Hola Android – $name")</code></td></tr><tr><td>Responder las 5 preguntas</td><td style="text-align:center">✅</td><td>Más abajo</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Primer contacto con Android Studio: dónde está cada archivo, cómo se crea el teléfono virtual y cómo se ejecuta la app. El código de la rama está <strong>comentado línea por línea</strong> (onCreate, setContent, tema, Scaffold, innerPadding, @Composable, @Preview) y muestra <strong>“Hola Android – Felipe”</strong>.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong>Vista Android del panel Project:</strong> agrupa los archivos por tipo (manifests, kotlin+java, res, Gradle Scripts) aunque en disco estén en otras carpetas.</li><li><strong>Dónde se ve la compilación:</strong> en la ventana <em>Build</em> (abajo). La ejecución y los mensajes de la app, en <em>Run</em> y <em>Logcat</em>.</li><li><strong><code>setContent { }</code></strong> reemplaza al viejo <code>setContentView(R.layout...)</code>: todo lo de adentro es la interfaz en Compose.</li><li><strong><code>innerPadding</code></strong> es el espacio que deja el <code>Scaffold</code> para no quedar debajo de la barra de estado; por eso se pasa como <code>Modifier.padding(innerPadding)</code>.</li><li><strong>MAIN y LAUNCHER</strong> (en el Manifest) indican que esa Activity es la que abre el ícono de la app.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()                      // dibuja detrás de las barras del sistema
+        setContent {                            // desde acá, interfaz en Compose
+            EjerciciosKotlinTheme {             // colores y tipografía de la app
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -&gt;
+                    Greeting(name = "Felipe", modifier = Modifier.padding(innerPadding))
+                }
+            }
+        }
+    }
+}
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(text = "Hola Android – $name", modifier = modifier)
+}</pre><div class="figs"><figure><img src="img/ej01.png" style="height:120px"><br>Ejecutado en el AVD: “Hola Android – Felipe”</figure></div><table><tr><th>Archivo o herramienta</th><th>Dónde está</th></tr>
+<tr><td><code>MainActivity.kt</code></td><td>app → kotlin+java → com.example.ejercicioskotlin</td></tr>
+<tr><td><code>AndroidManifest.xml</code></td><td>app → manifests</td></tr>
+<tr><td>Gradle del módulo</td><td>Gradle Scripts → <code>build.gradle.kts (Module :app)</code></td></tr>
+<tr><td>Device Manager</td><td>barra lateral derecha (ícono de teléfono) o <em>Tools → Device Manager</em></td></tr></table>
+<div class="caja regla"><strong class="titulo">Corregido en la rama</strong>Quedaba la plantilla <code>"Hello $name!"</code>; se cambió a <code>"Hola Android – $name"</code> como pide la consigna.</div>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Qué archivo contiene el código Kotlin principal?</strong><br><code>MainActivity.kt</code>: tiene la Activity que arranca la app y los composables de la pantalla.</p>
+<p><strong>2. ¿Qué diferencia hay entre hacer Run y abrir solamente un Preview?</strong><br>Run compila, instala y ejecuta la app completa en el AVD (con su ciclo de vida, clics, Intents). Preview solo dibuja un composable dentro de Android Studio: es más rápido pero no ejecuta la app.</p>
+<p><strong>3. ¿Qué es un AVD? ¿Es lo mismo que el emulador?</strong><br>No. El AVD es la configuración de un dispositivo virtual (modelo, pantalla, versión de Android); el emulador es el programa que lo hace correr.</p>
+<p><strong>4. ¿Qué API de Android utiliza el dispositivo virtual?</strong><br>Se ve en Device Manager, columna API. (Las pruebas de estos apuntes se hicieron en un <em>Pixel 8</em> virtual.)</p>
+<p><strong>5. ¿Qué ocurre si el AVD está apagado cuando se presiona Run?</strong><br>Android Studio lo inicia automáticamente y, cuando terminó de arrancar, instala y abre la app (tarda más la primera vez).</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ La app corre en un AVD con el texto personalizado (probado). Señalar los cuatro archivos o herramientas se demuestra en Android Studio (tabla de arriba).</div>
+
+<h2 class="salto">Ejercicio 2 — Primeros pasos con funciones @Composable</h2>
+<p><strong>Consigna:</strong> Crear <code>Presentacion()</code> con tres textos (nombre, carrera, tecnología a aprender), usarla en la pantalla y en un <code>@Preview</code>. Experimentar: quitar <code>@Composable</code>, escribir mal <code>Text</code>, poner dos <code>Text</code> sin layout.<br>Rama: <code>ejercicio-02-presentacion</code></p>
+<table><tr><th>Lo que pide la guía</th><th style="width:7%"></th><th style="width:38%">Dónde / cómo</th></tr><tr><td>Composable <code>Presentacion</code> con tres textos (nombre, carrera, tecnología)</td><td style="text-align:center">✅</td><td><code>Presentacion()</code> con <code>Column</code></td></tr><tr><td>Usarla desde la interfaz principal</td><td style="text-align:center">✅</td><td><code>setContent</code> → <code>Presentacion(...)</code></td></tr><tr><td>Función con <code>@Preview</code></td><td style="text-align:center">✅</td><td><code>PresentacionPreview()</code></td></tr><tr><td>Experimentación: quitar @Composable, escribir mal Text, dos Text sin layout</td><td style="text-align:center">🧑‍💻</td><td>Errores esperados explicados en las aclaraciones</td></tr></table>
+<div class="caja pocas"><strong class="titulo">En pocas palabras</strong>Se crea el primer composable propio y se lo usa en dos lugares: la app y el Preview. Se agregó un <code>Column</code> porque, sin layout, los textos se dibujan uno encima del otro.</div>
+<div class="caja novato"><strong class="titulo">Importante a considerar</strong><ul><li><strong>Sin <code>@Composable</code></strong> el compilador marca error en <code>Text(...)</code>: “@Composable invocations can only happen from the context of a @Composable function”.</li><li><strong>Escribir mal <code>Text</code></strong> (ej. <code>Txt</code>) da “Unresolved reference”: el nombre no existe.</li><li><strong>Dos <code>Text</code> sin layout</strong> se superponen en la esquina; <code>Column</code> los apila verticalmente.</li><li><strong>El Preview es otra función</strong> (<code>PresentacionPreview</code>) que solo existe para el editor; la app no la usa.</li></ul></div>
+<h3>Explicación y pruebas</h3>
+<pre>@Composable
+fun Presentacion(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Text(text = "Felipe")
+        Text(text = "Ingeniería en Sistemas")
+        Text(text = "Quiero aprender Kotlin")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PresentacionPreview() {
+    EjerciciosKotlinTheme { Presentacion() }
+}</pre><div class="figs"><figure><img src="img/ej02.png" style="height:120px"><br>En el emulador</figure></div>
+<h3>Preguntas de la guía</h3>
+<p><strong>1. ¿Por qué una función @Composable puede llamar a Text() y una común no?</strong><br>Porque <code>Text</code> también es @Composable: necesita el contexto de composición que Compose le pasa solo a otras funciones @Composable. Una función común no lo tiene.</p>
+<div class="caja regla"><strong class="titulo">Criterio de finalización</strong>✅ <code>Presentacion()</code> se usa desde la pantalla de la app y desde un <code>@Preview</code>.</div>
+
+<h2 class="salto parte">Anexo A · Organización del repositorio</h2>
+<p>Un solo proyecto Android (<code>com.example.ejercicioskotlin</code>) y <strong>una rama por ejercicio</strong>; cada rama tiene
+solo el código de su ejercicio en <code>MainActivity.kt</code> (la guía permite trabajar así: “reutilizar un mismo proyecto y crear una pantalla
+o archivo Kotlin nuevo para cada actividad”).</p>
+<table><tr><th>Rama</th><th>Ejercicio</th></tr><tr><td><code>ejercicio-01-explorar-ide</code></td><td>1 — Primer proyecto, emulador y recorrido del entorno</td></tr><tr><td><code>ejercicio-02-presentacion</code></td><td>2 — Primeros pasos con funciones @Composable</td></tr><tr><td><code>ejercicio-03-tipos-de-datos</code></td><td>3 — Kotlin: val, var, tipos y plantillas de String</td></tr><tr><td><code>ejercicio-04-funciones-con-parametros</code></td><td>4 — Funciones, parámetros y componentes reutilizables</td></tr><tr><td><code>ejercicio-05-modificadores</code></td><td>5 — Column, Row, Modifier y Material 3</td></tr><tr><td><code>ejercicio-06-contador</code></td><td>6 — Estado, botones y recomposición: contador</td></tr><tr><td><code>ejercicio-07-textfield-nullsafety</code></td><td>7 — TextField, if/when y null safety</td></tr><tr><td><code>ejercicio-08-calculadora-debugger-logcat</code></td><td>8 — Calculadora pequeña, Logcat y debugger</td></tr><tr><td><code>ejercicio-09-dataclass-list-lazycolumn</code></td><td>9 — data class, List y LazyColumn</td></tr><tr><td><code>ejercicio-10-lista-editable-tareas</code></td><td>10 — Lista editable: tareas del estudiante</td></tr><tr><td><code>ejercicio-11-recursos-configuracion-visual</code></td><td>11 — Recursos Android y configuración visual</td></tr><tr><td><code>ejercicio-12-context-intents</code></td><td>12 — Primer contacto con el Android SDK: Context e Intents</td></tr><tr><td><code>ejercicio-13-organizador-cursada</code></td><td>13 — Miniaplicación integradora: organizador de cursada</td></tr></table>
+<pre>app/src/main/
+ ├── AndroidManifest.xml
+ ├── java/com/example/ejercicioskotlin/
+ │    ├── MainActivity.kt        # el ejercicio de la rama
+ │    └── ui/theme/              # Color.kt, Theme.kt, Type.kt
+ └── res/values/strings.xml      # (+ values-en/ en los Ej 11 y 13)</pre>
+<h2 class="anexo">Anexo B · Cómo ejecutar y probar</h2>
+<pre>git clone https://github.com/feliforte14/EJERCICIOS-GUIA.git
+cd EJERCICIOS-GUIA
+git switch ejercicio-13-organizador-cursada      # o la rama del ejercicio</pre>
+<ol><li>Abrir en Android Studio y esperar el <em>Gradle sync</em>.</li>
+<li><strong>Run ▶</strong> en un AVD (Device Manager). Para depurar: <strong>Debug</strong> (bichito) con un breakpoint.</li>
+<li><strong>Logcat</strong>: filtrar por etiqueta (<code>tag:CALCULADORA</code>, <code>tag:ORGANIZADOR</code>).</li>
+<li><strong>Previews</strong>: abrir el archivo y la vista <em>Split</em> o <em>Design</em>.</li>
+<li>Para ver el modo oscuro o el inglés en el emulador: Ajustes → Pantalla → Tema oscuro; Ajustes → Sistema → Idiomas.</li></ol>
+<h2 class="anexo">Anexo C · Preguntas transversales</h2>
+
+<table>
+<tr><th style="width:40%">Pregunta</th><th>Respuesta</th></tr>
+<tr><td>1–3. ¿Qué es Kotlin puro, qué es Compose y qué depende del Android SDK?</td><td>Ver la tabla del glosario. Ejemplos del proyecto: <code>calcular()</code>, <code>descripcionEdad()</code>, <code>data class</code> (Kotlin); composables (Compose); <code>Intent</code>, <code>Context</code>, <code>Log</code>, <code>R.string</code> (SDK).</td></tr>
+<tr><td>4. ¿Qué datos son constantes y cuáles estado?</td><td>Constantes: la lista de materias del Ej 9, los datos de la ficha. Estado: contador, campos de texto, lista de tareas/actividades, filtro.</td></tr>
+<tr><td>5. ¿Qué evento cambia cada estado?</td><td><code>onClick</code> de los botones, <code>onValueChange</code> de los campos, <code>onCheckedChange</code> del Checkbox, <code>onClick</code> de los chips.</td></tr>
+<tr><td>6. ¿Qué parte de la UI se recompone?</td><td>Las funciones que <strong>leen</strong> el estado que cambió (por ejemplo, solo el <code>Text</code> del contador).</td></tr>
+<tr><td>7. ¿Qué función podría extraerse?</td><td>Lo que se repite con pequeñas diferencias: <code>DatoEstudiante</code> (Ej 4), <code>ejecutar()</code> (Ej 8), <code>ActividadItem</code> (Ej 13).</td></tr>
+<tr><td>8. ¿El error es de sintaxis, tipos, compilación o ejecución?</td><td>Sintaxis/tipos/compilación: los marca el editor y la ventana Build (Ej 2). Ejecución: aparecen al correr, en Logcat (por ejemplo, <code>toInt()</code> con texto, o un Intent sin app que lo atienda).</td></tr>
+<tr><td>9–10. ¿Breakpoint o Logcat?</td><td>Breakpoint para mirar valores en un momento puntual (Ej 8); Logcat para seguir lo que pasa sin frenar la app (Ej 8 y 13).</td></tr>
+<tr><td>11. ¿Emulador o alcanza con Preview?</td><td>Preview para el aspecto (Ej 5, 11, 13). Emulador para comportamiento: clics, estado, Intents (Ej 6–13).</td></tr>
+<tr><td>12. ¿La IA propuso conceptos que todavía no puedo explicar?</td><td>Si es así, primero hay que entenderlos (pedirle que lo explique o que haga preguntas) y recién después usarlos.</td></tr>
+</table>
+
+
+<h2 class="anexo">Anexo D · Registro de uso de IA (pueden pedirlo en parciales y finales)</h2>
+
+<p>Plantilla para completar con las consultas propias, una fila por consulta:</p>
+<table>
+<tr><th>Problema</th><th>Prompt</th><th>Respuesta útil</th><th>Decisión propia</th><th>Verificación</th></tr>
+<tr><td>¿Qué quería resolver?</td><td>¿Qué se le pidió a la IA?</td><td>¿Qué concepto o pista aportó?</td><td>¿Qué se modificó realmente?</td><td>¿Cómo se comprobó que funcionaba?</td></tr>
+<tr><td>Ejemplo: no entendía por qué el contador no se actualizaba con <code>var</code>.</td><td>“Explicame paso a paso qué sucede desde que presiono un Button hasta que el Text muestra el nuevo valor.”</td><td>Diferencia entre variable común y estado observado (<code>mutableStateOf</code> + <code>remember</code>).</td><td>Cambié la variable a <code>var contador by remember { mutableStateOf(0) }</code>.</td><td>En el emulador, +1/−1/Reiniciar actualizan el valor y nunca baja de 0.</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<div class="caja ojo"><strong class="titulo">Prompts que conviene evitar (sección 18)</strong>“Haceme el ejercicio 10”, “Dame el código final”, “Corregí todo mi proyecto”.
+Mejor: “Mi botón no agrega elementos. Ayudame a identificar qué estado debería cambiar”, o “Revisá esta función y haceme preguntas para comprobar si entiendo lo que hace”.</div>
+
+
+<h2 class="anexo">Anexo E · Revisión del código contra la guía</h2>
+
+<p>Se revisó cada rama contra la consigna. Lo que no se cumplía se corrigió y se subió a GitHub (commits nuevos en cada rama, probados en el emulador):</p>
+<table><tr><th>Ejercicio</th><th>Qué se corrigió</th></tr>
+<tr><td>1</td><td>El texto decía “Hello Felipe!”; ahora “Hola Android – Felipe”.</td></tr>
+<tr><td>3</td><td>Se agregó la Parte B (tipos explícitos) y la frase que combina texto y expresión.</td></tr>
+<tr><td>7</td><td>Mensajes distintos para campo vacío y texto no numérico; se usa el <code>modifier</code> recibido (respeta el <code>innerPadding</code>); el resultado nombra a la persona.</td></tr>
+<tr><td>9</td><td>Desafío 1: un Switch muestra solo las aprobadas.</td></tr></table>
+<div class="caja ojo"><strong class="titulo">Lo que hay que mostrar en vivo (no queda en el código)</strong>
+Recorrer el proyecto y el Device Manager (Ej 1), los errores provocados a propósito (Ej 2), el breakpoint con Debug (Ej 8 y 13) y la
+explicación oral del Ej 13. Para cada uno, el apunte indica qué hacer y qué se debería ver.</div>
+
+<h2 class="salto parte">Glosario</h2>
+<table>
+  <tr><th style="width:24%">Término</th><th>Qué significa, en simple</th></tr>
+  <tr><td><strong>Android Studio</strong></td><td>El programa (IDE) donde se escribe, compila, ejecuta y depura la app.</td></tr>
+  <tr><td><strong>Gradle</strong></td><td>La herramienta que compila el proyecto y baja las bibliotecas. Su configuración está en <code>build.gradle.kts</code>.</td></tr>
+  <tr><td><strong>AVD / emulador</strong></td><td>AVD = la <em>configuración</em> de un teléfono virtual (modelo, versión de Android). El emulador es el <em>programa</em> que lo ejecuta.</td></tr>
+  <tr><td><strong>Activity</strong></td><td>Una pantalla de Android con su ciclo de vida. <code>MainActivity</code> es la que se abre al tocar el ícono.</td></tr>
+  <tr><td><strong>AndroidManifest.xml</strong></td><td>La “ficha” de la app para el sistema: nombre, ícono, Activities y cuál es la de inicio (MAIN/LAUNCHER).</td></tr>
+  <tr><td><strong>Kotlin</strong></td><td>El lenguaje. <code>val</code>, <code>var</code>, <code>fun</code>, <code>if</code>, <code>when</code>, <code>data class</code>, <code>List</code> son Kotlin puro.</td></tr>
+  <tr><td><strong>Jetpack Compose</strong></td><td>La biblioteca para dibujar la interfaz con funciones Kotlin (<code>@Composable</code>, <code>Text</code>, <code>Button</code>, <code>Column</code>…).</td></tr>
+  <tr><td><strong>Android SDK</strong></td><td>Las APIs del sistema operativo: <code>Context</code>, <code>Intent</code>, <code>Uri</code>, <code>Log</code>, recursos (<code>R.string</code>).</td></tr>
+  <tr><td><strong>@Composable</strong></td><td>Marca una función que describe una parte de la pantalla. Solo se puede llamar desde otra función @Composable.</td></tr>
+  <tr><td><strong>@Preview</strong></td><td>Hace que Android Studio dibuje un composable en el editor sin abrir el emulador.</td></tr>
+  <tr><td><strong>Modifier</strong></td><td>Cadena de ajustes de un componente: tamaño, márgenes, fondo, clics. <strong>El orden importa</strong>.</td></tr>
+  <tr><td><strong>Estado</strong></td><td>Un valor que, al cambiar, debe cambiar la pantalla (<code>mutableStateOf</code>). Compose lo “observa”.</td></tr>
+  <tr><td><strong>Recomposición</strong></td><td>Compose vuelve a ejecutar las funciones que leen un estado que cambió, para redibujar.</td></tr>
+  <tr><td><strong>remember</strong></td><td>Guarda un valor entre recomposiciones (si no, cada recomposición lo crearía de nuevo).</td></tr>
+  <tr><td><strong>null / tipo nullable</strong></td><td><code>Int?</code> puede ser un número o <code>null</code> (“no hay valor”). Kotlin obliga a manejar ese caso.</td></tr>
+  <tr><td><strong>Logcat / breakpoint</strong></td><td>Logcat: consola de mensajes de la app (<code>Log.d</code>). Breakpoint: punto donde el Debugger pausa para mirar variables.</td></tr>
+  <tr><td><strong>Recurso</strong></td><td>Archivo fuera del código (textos en <code>res/values/strings.xml</code>, colores, imágenes) que Android elige según idioma, tema, etc.</td></tr>
+  <tr><td><strong>Intent</strong></td><td>Mensaje que pide al sistema una acción: abrir otra pantalla, compartir, abrir un link.</td></tr>
+</table>
+</body>
+</html>
