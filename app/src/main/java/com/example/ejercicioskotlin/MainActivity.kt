@@ -62,7 +62,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     // (sin modificaciones) y se recibe siempre como último parámetro con nombre.
 
     Text(
-        text = "Hello $name!",
+        text = "Hola Android – $name",   // texto pedido por la consigna: "Hola Android – <nombre>"
         modifier = modifier
     )
 }
